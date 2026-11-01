@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f0e6">
+  <title>Save the date – Ida &amp; Fritjof</title>
+  <style>
+    :root {
+      --paper: #f7f3e9;
+      --paper-shadow: #e7dfcf;
+      --green: #234532;
+      --green-deep: #173626;
+      --gold: #b99a5b;
+      --ink: #263d2e;
+      --envelope: #e9e2d3;
+      --envelope-dark: #d9cfbb;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      margin: 0;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      overflow-x: hidden;
+      padding: 34px 18px;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 18% 16%, rgba(255,255,255,.92), transparent 38%),
+        radial-gradient(ellipse at 84% 80%, rgba(208,197,171,.24), transparent 36%),
+        #eee9dd;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .scene {
+      width: min(100%, 760px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      perspective: 1400px;
+    }
+
+    .intro {
+      text-align: center;
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .intro p {
+      margin: 0;
+      color: #667461;
+      font: 11px/1.6 system-ui, sans-serif;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+    .intro h1 {
+      margin: 9px 0 0;
+      color: var(--green);
+      font-size: clamp(25px, 5vw, 36px);
+      font-weight: 400;
+      letter-spacing: .035em;
+    }
+
+    .envelope-wrap {
+      position: relative;
+      width: min( min(88vw, 540px), 540px);
+      height: clamp(300px, 62vw, 390px);
+      display: grid;
+      place-items: end center;
+      isolation: isolate;
+    }
+
+    .envelope {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 68%;
+      border-radius: 5px 5px 12px 12px;
+      background: var(--envelope);
+      box-shadow: 0 28px 55px rgba(50, 45, 31, .19), 0 4px 9px rgba(50,45,31,.08);
+      transform-style: preserve-3d;
+      z-index: 3;
+    }
+    .envelope::before, .envelope::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    /* The two folded lower sides */
+    .envelope::before {
+      background: linear-gradient(145deg, transparent 49.5%, rgba(194,183,160,.58) 50%, transparent 50.6%),
+                  linear-gradient(215deg, transparent 49.5%, rgba(194,183,160,.42) 50%, transparent 50.6%);
+      border-radius: inherit;
+      z-index: 4;
+    }
+    .pocket {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: inherit;
+      background: linear-gradient(145deg, #eee8da, #e4dccb);
+      clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+      z-index: 5;
+    }
+    .pocket::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(35deg, transparent 49.7%, rgba(190,178,151,.38) 50%, transparent 50.6%);
+      opacity: .8;
+    }
+
+    .flap {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 62%;
+      transform-origin: top center;
+      transform: rotateX(0deg);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      background: linear-gradient(180deg, #f0eadc, #ded4c1);
+      z-index: 7;
+      backface-visibility: visible;
+      transition: transform 1s cubic-bezier(.2,.75,.2,1);
+      filter: drop-shadow(0 3px 3px rgba(54,46,31,.08));
+    }
+
+    .seal {
+      position: absolute;
+      left: 50%;
+      top: 43%;
+      transform: translate(-50%, -50%);
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #f7f1e4;
+      background: radial-gradient(circle at 35% 30%, #d2b77b, #a88a4e 72%);
+      box-shadow: 0 3px 8px rgba(76,59,26,.22), inset 0 1px 2px rgba(255,255,255,.5);
+      font-size: 22px;
+      z-index: 8;
+      transition: opacity .35s ease, transform .5s ease;
+    }
+
+    .letter {
+      position: absolute;
+      bottom: 13%;
+      width: 91%;
+      min-height: 94%;
+      padding: 25px 24px 22px;
+      background: var(--paper);
+      border: 1px solid rgba(190,174,142,.55);
+      box-shadow: 0 8px 24px rgba(52,45,30,.14);
+      text-align: center;
+      z-index: 2;
+      transform: translateY(5%) scale(.98);
+      transition: transform 1.15s cubic-bezier(.18,.75,.2,1) .25s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .letter::before {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border: 1px solid rgba(185,154,91,.38);
+      pointer-events: none;
+    }
+    .manor {
+      width: min(100%, 420px);
+      height: clamp(125px, 28vw, 190px);
+      object-fit: contain;
+      margin: -5px auto 7px;
+      mix-blend-mode: multiply;
+    }
+    .welcome {
+      margin: 0;
+      color: var(--green);
+      font-size: clamp(19px, 4.1vw, 30px);
+      font-weight: 400;
+      line-height: 1.15;
+    }
+    .names {
+      margin: 0 0 5px;
+      color: var(--green);
+      font-size: clamp(35px, 8vw, 58px);
+      line-height: 1.02;
+      font-weight: 400;
+      letter-spacing: -.035em;
+    }
+    .names span { color: var(--gold); }
+    .save {
+      margin: 8px 0 4px;
+      color: var(--green);
+      font-size: clamp(15px, 3.4vw, 22px);
+      font-style: italic;
+    }
+    .date {
+      margin: 2px 0 5px;
+      color: var(--green);
+      font-size: clamp(19px, 4vw, 27px);
+      line-height: 1.2;
+    }
+    .place {
+      margin: 0;
+      color: #52624d;
+      font-size: clamp(14px, 2.9vw, 18px);
+      font-style: italic;
+    }
+    .ornament {
+      width: 110px;
+      height: 1px;
+      margin: 12px auto 0;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .hint {
+      margin: 0;
+      color: #65705f;
+      font: 12px/1.5 system-ui, sans-serif;
+      letter-spacing: .08em;
+      text-align: center;
+      transition: opacity .4s ease;
+    }
+    .open-button {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 8px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .open-button:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 7px;
+    }
+
+    .scene.open .flap { transform: rotateX(180deg); z-index: 1; }
+    .scene.open .letter {
+      transform: translateY(-30%) scale(1);
+      z-index: 6;
+      transition-delay: .2s;
+    }
+    .scene.open .seal {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.5);
+    }
+    .scene.open .hint { opacity: 0; }
+    .scene.open .intro { opacity: 0; transform: translateY(-8px); }
+    .scene.open .envelope { box-shadow: 0 18px 40px rgba(50,45,31,.12); }
+
+    .replay {
+      border: 1px solid rgba(35,69,50,.32);
+      border-radius: 99px;
+      padding: 10px 18px;
+      background: rgba(247,243,233,.55);
+      color: var(--green);
+      font: 11px system-ui, sans-serif;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .5s ease;
+    }
+    .scene.open .replay { opacity: 1; pointer-events: auto; transition-delay: .9s; }
+    .replay:hover { background: #fffdf7; }
+
+    @media (max-width: 420px) {
+      body { padding-inline: 12px; }
+      .envelope-wrap { width: 94vw; height: 330px; }
+      .letter { width: 92%; padding: 18px 15px; }
+      .manor { height: 116px; }
+      .scene.open .letter { transform: translateY(-24%) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="scene" id="scene">
+    <header class="intro">
+      <p>En liten hälsning från oss</p>
+      <h1>Something lovely is coming</h1>
+    </header>
+
+    <div class="envelope-wrap">
+      <article class="letter" aria-label="Save the date-kort">
+        <img class="manor" src="assets/herrgard-watercolor.jpg" alt="Akvarellillustration av en herrgård vid vattnet">
+        <p class="welcome">Välkomna till</p>
+        <h2 class="names">Ida <span>&amp;</span> Fritjof</h2>
+        <p class="save">Spara datumet för vårt bröllop</p>
+        <p class="date">Lördagen den 4 september 2027</p>
+        <p class="place">Åsa Herrgård, Lammhult</p>
+        <div class="ornament" aria-hidden="true"></div>
+      </article>
+
+      <div class="envelope" aria-hidden="true">
+        <div class="pocket"></div>
+        <div class="flap"></div>
+        <div class="seal">I&nbsp;&amp;&nbsp;F</div>
+      </div>
+      <button class="open-button" id="openButton" type="button"
+        aria-label="Öppna kuvertet och visa save the date-kortet"></button>
+    </div>
+
+    <p class="hint" id="hint">TRYCK PÅ KUVERTET FÖR ATT ÖPPNA</p>
+    <button class="replay" id="replayButton" type="button">Stäng kortet</button>
+  </main>
+
+  <script>
+    const scene = document.getElementById("scene");
+    const openButton = document.getElementById("openButton");
+    const replayButton = document.getElementById("replayButton");
+
+    function setOpen(isOpen) {
+      scene.classList.toggle("open", isOpen);
+      openButton.setAttribute("aria-label", isOpen
+        ? "Kuvertet är öppet"
+        : "Öppna kuvertet och visa save the date-kortet");
+      openButton.disabled = isOpen;
+    }
+
+    openButton.addEventListener("click", () => setOpen(true));
+    replayButton.addEventListener("click", () => setOpen(false));
+  </script>
+</body>
+</html>
