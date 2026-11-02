@@ -7,12 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Cormorant Garamond', serif;
-            background-color: #F3F0EA;
-            color: #1B3B2B;
+            background-color: #F4F1EA;
+            color: #1C3325;
             overflow-x: hidden;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
@@ -20,74 +20,31 @@
 
         .sans-subtle {
             font-family: 'Montserrat', sans-serif;
-            letter-spacing: 0.22em;
+            letter-spacing: 0.2em;
         }
 
-        /* Textured Paper Card Effect */
-        .card-paper {
-            background-color: #FAF8F3;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.7), rgba(240, 234, 222, 0.3)),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
-            box-shadow: 0 18px 40px -5px rgba(50, 40, 30, 0.16), 0 0 0 1px rgba(210, 200, 185, 0.45);
-        }
-
-        /* Gold Ampersand Styling */
-        .gold-ampersand {
-            color: #C19A5B;
-            background: linear-gradient(135deg, #D4AF37 0%, #C19A5B 50%, #9A7B3E 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-weight: 300;
-        }
-
-        /* Image Masking & Positioning to crop out water & jetty */
-        .mansion-image-frame {
-            width: 100%;
-            height: 52%;
-            position: relative;
-            overflow: hidden;
-            border-radius: 2px;
-        }
-
-        .mansion-image-frame img {
-            width: 100%;
-            height: 140%; /* Scaled up so we crop bottom water section */
-            object-fit: cover;
-            object-position: center 8%; /* Move mansion up towards top */
-        }
-
-        /* Fade transition at bottom of cropped image into paper background */
-        .image-bottom-fade {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 35px;
-            background: linear-gradient(to bottom, rgba(250, 248, 243, 0) 0%, #FAF8F3 100%);
-            pointer-events: none;
-        }
-
-        /* 3D Envelope Scene Styles */
         .scene {
-            perspective: 1400px;
+            perspective: 1200px;
         }
 
         .envelope-wrapper {
             position: relative;
-            width: 330px;
-            height: 230px;
+            width: 320px;
+            height: 220px;
             cursor: pointer;
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         @media (min-width: 640px) {
             .envelope-wrapper {
-                width: 450px;
-                height: 300px;
+                width: 440px;
+                height: 290px;
             }
+        }
+
+        .card-texture {
+            background: #FDFBF7;
+            box-shadow: inset 0 0 25px rgba(210, 200, 185, 0.25);
         }
 
         .envelope-back {
@@ -96,7 +53,7 @@
             height: 100%;
             background: #EDE8DF;
             border-radius: 6px;
-            box-shadow: 0 20px 45px -12px rgba(40, 30, 20, 0.18);
+            box-shadow: 0 18px 40px -10px rgba(0, 0, 0, 0.12);
         }
 
         .envelope-flap {
@@ -113,8 +70,8 @@
 
         .flap-shape {
             width: 100%;
-            height: 56%;
-            background: linear-gradient(180deg, #E8E2D5 0%, #DFD8C9 100%);
+            height: 55%;
+            background: linear-gradient(180deg, #E6E0D3 0%, #DFD9CB 100%);
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             border-top: 1px solid rgba(255, 255, 255, 0.6);
         }
@@ -163,11 +120,11 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 56px;
-            height: 56px;
-            background: radial-gradient(circle at 35% 35%, #8A2525, #4A0E0E 80%);
+            width: 54px;
+            height: 54px;
+            background: radial-gradient(circle at 35% 35%, #802A2A, #541919 75%);
             border-radius: 50%;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.4), inset 0 2px 3px rgba(255,255,255,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.35), inset 0 2px 3px rgba(255,255,255,0.25);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -176,7 +133,7 @@
             z-index: 5;
         }
 
-        .card-in-envelope {
+        .card {
             position: absolute;
             left: 4%;
             top: 4%;
@@ -185,6 +142,15 @@
             border-radius: 3px;
             transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s 0.4s;
             z-index: 2;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1rem 1rem 1rem;
+            text-align: center;
+            border: 1px solid rgba(190, 180, 165, 0.4);
+            overflow: hidden;
         }
 
         .open .envelope-flap {
@@ -195,7 +161,7 @@
         .open .wax-seal {
             opacity: 0;
             pointer-events: none;
-            transform: translate(-50%, -50%) scale(0.5);
+            transform: translate(-50%, -50%) scale(0.6);
         }
 
         .card-extracted {
@@ -204,17 +170,33 @@
             left: 50% !important;
             transform: translate(-50%, -50%) scale(1) !important;
             width: 90vw !important;
-            max-width: 410px !important;
+            max-width: 390px !important;
             height: auto !important;
-            aspect-ratio: 1 / 1.5 !important;
+            aspect-ratio: 1 / 1.48 !important;
             z-index: 50 !important;
-            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.28), 0 0 0 100vw rgba(236, 232, 223, 0.88) !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 100vw rgba(244, 241, 234, 0.85) !important;
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), width 0.8s ease !important;
         }
 
+        /* Beskär bilden så att huset flyttas upp och vattnet/bryggan döljs */
+        .image-crop-container {
+            width: 100%;
+            height: 145px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 2px;
+        }
+
+        .image-crop-container img {
+            width: 100%;
+            height: 195px;
+            object-fit: cover;
+            object-position: top center;
+        }
+
         @keyframes pulse-subtle {
-            0%, 100% { opacity: 0.7; transform: translateY(0); }
-            50% { opacity: 1; transform: translateY(-3px); }
+            0%, 100% { opacity: 0.6; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-4px); }
         }
 
         .animate-prompt {
@@ -222,132 +204,81 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-between p-3 sm:p-6 selection:bg-emerald-100">
+<body class="min-h-screen flex flex-col justify-between items-center p-4 sm:p-6 selection:bg-emerald-100">
 
-    <!-- Mode Selector Header -->
-    <header class="w-full max-w-lg flex flex-col items-center pt-2 sm:pt-4 z-10">
-        <div class="inline-flex p-1 bg-stone-200/80 rounded-full border border-stone-300/70 shadow-inner mb-2">
-            <button id="modeCardBtn" onclick="setMode('card')" class="sans-subtle text-[10px] sm:text-xs px-4 py-1.5 rounded-full transition-all duration-300 font-medium bg-white text-emerald-950 shadow-sm">
-                Kortöversikt
-            </button>
-            <button id="modeEnvelopeBtn" onclick="setMode('envelope')" class="sans-subtle text-[10px] sm:text-xs px-4 py-1.5 rounded-full transition-all duration-300 font-medium text-stone-600 hover:text-stone-900">
-                Interaktivt Kuvert
-            </button>
-        </div>
+    <header class="w-full max-w-md text-center pt-2 sm:pt-4 opacity-80">
+        <span class="sans-subtle text-[10px] sm:text-xs text-emerald-950 uppercase tracking-[0.3em]">Save the Date</span>
+        <h1 class="font-serif italic text-emerald-950 text-base sm:text-lg mt-0.5">Ida & Fritjof</h1>
     </header>
 
-    <!-- Main View Container -->
-    <main class="w-full flex-1 flex flex-col items-center justify-center my-auto py-2">
+    <main class="scene my-auto py-4 w-full flex flex-col items-center justify-center">
         
-        <!-- STANDALONE CARD VIEW -->
-        <div id="standaloneCardView" class="w-full max-w-[400px] px-2 flex justify-center transition-all duration-500">
+        <div id="envelopeWrapper" class="envelope-wrapper" onclick="openEnvelope()">
             
-            <div class="card-paper relative w-full aspect-[1/1.5] rounded-[3px] p-4 sm:p-6 flex flex-col justify-between items-center text-center select-none overflow-hidden">
+            <div class="envelope-back"></div>
+
+            <div id="saveTheDateCard" class="card card-texture relative select-none">
                 
-                <!-- Cropped Mansion Image Frame (Moved up, water & jetty masked out) -->
-                <div class="mansion-image-frame shadow-sm">
-                    <img src="card.jpg" alt="Asa Herrgård Akvarell" onerror="this.onerror=null; this.src='https://placehold.co/800x600/FDFBF7/2E4D23?text=Asa+Herrg%C3%A5rd';">
-                    <div class="image-bottom-fade"></div>
+                <!-- Huset beskärt i topposition -->
+                <div class="image-crop-container">
+                    <img src="card.jpg" alt="Asa Herrgård">
                 </div>
 
-                <!-- Text Overlay Content -->
-                <div class="my-auto pt-2 pb-1 flex flex-col items-center w-full">
+                <!-- Typografi och textrader -->
+                <div class="my-auto py-1 flex flex-col items-center">
                     
-                    <!-- Heading -->
-                    <p class="font-serif text-2xl sm:text-3xl text-[#1B3B2B] font-normal leading-tight tracking-wide">
+                    <p class="font-serif text-xl sm:text-2xl text-emerald-950 font-normal leading-tight">
                         Välkomna till
                     </p>
 
-                    <!-- Names with Gold Ampersand -->
-                    <h2 class="font-serif text-3xl sm:text-4xl text-[#1B3B2B] font-normal mt-1 mb-2 tracking-wide flex items-center justify-center gap-2">
-                        <span>Ida</span>
-                        <span class="gold-ampersand text-3xl sm:text-4xl font-light">&amp;</span>
-                        <span>Fritjof</span>
+                    <h2 class="font-serif text-2xl sm:text-3xl text-emerald-950 font-normal mt-0.5 mb-1.5">
+                        Ida <span class="font-serif italic text-amber-600 text-2xl sm:text-3xl font-light">&amp;</span> Fritjof
                     </h2>
 
-                    <!-- Subtitle -->
-                    <p class="font-serif italic text-xs sm:text-sm text-[#1B3B2B]/90 mb-3 tracking-normal">
+                    <p class="font-serif italic text-[11px] sm:text-xs text-emerald-900/90 mb-2">
                         Spara datumet för vårt bröllop
                     </p>
 
-                    <!-- Date -->
-                    <p class="font-serif text-lg sm:text-xl text-[#1B3B2B] font-medium tracking-wide">
+                    <p class="font-serif text-base sm:text-lg text-emerald-950 font-medium tracking-wide">
                         Lördagen den 4 September 2027
                     </p>
 
-                    <!-- Venue Location -->
-                    <p class="font-serif italic text-xs sm:text-sm text-[#1B3B2B]/85 mt-1 tracking-wide">
+                    <p class="font-serif text-[11px] sm:text-xs text-emerald-900/80 mt-0.5">
                         Asa Herrgård, Lammhult
                     </p>
                 </div>
 
-                <!-- Bottom Decorative Divider Line -->
-                <div class="w-full pb-1 flex justify-center">
-                    <div class="w-16 h-[1px] bg-gradient-to-r from-transparent via-[#C19A5B]/50 to-transparent"></div>
+                <div class="pb-0.5">
+                    <div class="w-10 h-[1px] bg-emerald-900/20 mx-auto"></div>
                 </div>
 
+            </div>
+
+            <div class="envelope-pocket">
+                <div class="pocket-left"></div>
+                <div class="pocket-right"></div>
+                <div class="pocket-bottom"></div>
+            </div>
+
+            <div class="envelope-flap">
+                <div class="flap-shape"></div>
+            </div>
+
+            <div id="waxSeal" class="wax-seal">
+                <span class="font-serif italic text-amber-100 text-sm tracking-tighter select-none font-bold">I&amp;F</span>
             </div>
 
         </div>
 
-        <!-- INTERACTIVE ENVELOPE VIEW -->
-        <div id="interactiveEnvelopeView" class="scene hidden w-full flex flex-col items-center justify-center transition-all duration-500 py-4">
-            
-            <div id="envelopeWrapper" class="envelope-wrapper" onclick="openEnvelope()">
-                
-                <div class="envelope-back"></div>
-
-                <!-- Card inside Envelope -->
-                <div id="saveTheDateCard" class="card-in-envelope card-paper relative select-none flex flex-col justify-between items-center text-center p-3 overflow-hidden">
-                    
-                    <div class="mansion-image-frame h-[50%]">
-                        <img src="card.jpg" alt="Asa Herrgård" onerror="this.onerror=null; this.src='https://placehold.co/800x600/FDFBF7/2E4D23?text=Asa+Herrg%C3%A5rd';">
-                        <div class="image-bottom-fade"></div>
-                    </div>
-
-                    <div class="my-auto py-1">
-                        <p class="font-serif text-xl text-[#1B3B2B]">Välkomna till</p>
-                        <h2 class="font-serif text-2xl text-[#1B3B2B] font-normal">
-                            Ida <span class="gold-ampersand text-2xl">&amp;</span> Fritjof
-                        </h2>
-                        <p class="font-serif italic text-xs text-[#1B3B2B]/90 mt-0.5">Spara datumet för vårt bröllop</p>
-                        <p class="font-serif text-base text-[#1B3B2B] font-medium mt-1">Lördagen den 4 September 2027</p>
-                        <p class="font-serif italic text-xs text-[#1B3B2B]/85">Asa Herrgård, Lammhult</p>
-                    </div>
-
-                    <div class="pb-1">
-                        <div class="w-12 h-[1px] bg-[#C19A5B]/40 mx-auto"></div>
-                    </div>
-                </div>
-
-                <div class="envelope-pocket">
-                    <div class="pocket-left"></div>
-                    <div class="pocket-right"></div>
-                    <div class="pocket-bottom"></div>
-                </div>
-
-                <div class="envelope-flap">
-                    <div class="flap-shape"></div>
-                </div>
-
-                <div id="waxSeal" class="wax-seal">
-                    <span class="font-serif italic text-amber-100 text-sm tracking-tighter select-none font-bold">I&amp;F</span>
-                </div>
-
-            </div>
-
-            <div id="tapPrompt" class="mt-6 text-center animate-prompt transition-opacity duration-500">
-                <button onclick="openEnvelope()" class="sans-subtle text-[11px] text-stone-600 tracking-[0.2em] uppercase hover:text-stone-900 transition-colors">
-                    Klicka på kuvertet för att öppna
-                </button>
-            </div>
-
+        <div id="tapPrompt" class="mt-6 text-center animate-prompt transition-opacity duration-500">
+            <button onclick="openEnvelope()" class="sans-subtle text-[11px] text-stone-600 tracking-[0.2em] uppercase hover:text-stone-900 transition-colors">
+                Klicka på kuvertet för att öppna
+            </button>
         </div>
 
     </main>
 
-    <!-- Footer Action -->
-    <footer class="w-full max-w-md text-center pb-2 sm:pb-4">
+    <footer class="w-full max-w-md text-center pb-3 sm:pb-5">
         <button id="resetBtn" onclick="resetEnvelope(event)" class="opacity-0 pointer-events-none sans-subtle text-[10px] text-stone-500 hover:text-stone-800 tracking-[0.2em] uppercase transition-all duration-500 border-b border-stone-300 pb-0.5">
             Stäng kuvertet igen
         </button>
@@ -355,32 +286,9 @@
 
     <script>
         let isOpen = false;
-        let currentMode = 'card';
-
-        function setMode(mode) {
-            currentMode = mode;
-            const cardView = document.getElementById('standaloneCardView');
-            const envelopeView = document.getElementById('interactiveEnvelopeView');
-            const cardBtn = document.getElementById('modeCardBtn');
-            const envelopeBtn = document.getElementById('modeEnvelopeBtn');
-            const resetBtn = document.getElementById('resetBtn');
-
-            if (mode === 'card') {
-                cardView.classList.remove('hidden');
-                envelopeView.classList.add('hidden');
-                cardBtn.className = "sans-subtle text-[10px] sm:text-xs px-4 py-1.5 rounded-full transition-all duration-300 font-medium bg-white text-emerald-950 shadow-sm";
-                envelopeBtn.className = "sans-subtle text-[10px] sm:text-xs px-4 py-1.5 rounded-full transition-all duration-300 font-medium text-stone-600 hover:text-stone-900";
-                resetBtn.classList.add('opacity-0', 'pointer-events-none');
-            } else {
-                cardView.classList.add('hidden');
-                envelopeView.classList.remove('hidden');
-                envelopeBtn.className = "sans-subtle text-[10px] sm:text-xs px-4 py-1.5 rounded-full transition-all duration-300 font-medium bg-white text-emerald-950 shadow-sm";
-                cardBtn.className = "sans-subtle text-[10px] sm:text-xs px-4 py-1.5 rounded-full transition-all duration-300 font-medium text-stone-600 hover:text-stone-900";
-            }
-        }
 
         function openEnvelope() {
-            if (isOpen || currentMode !== 'envelope') return;
+            if (isOpen) return;
             isOpen = true;
 
             const wrapper = document.getElementById('envelopeWrapper');
