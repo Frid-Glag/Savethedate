@@ -151,7 +151,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 1.25rem 1rem 1rem 1rem;
+            padding: 1rem 0.8rem 0.8rem 0.8rem;
             text-align: center;
             border: 1px solid rgba(190, 180, 165, 0.35);
             overflow: hidden;
@@ -182,9 +182,10 @@
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), width 0.8s ease !important;
         }
 
+        /* Ökad höjd för att visa hela huset och trapporna */
         .image-crop-container {
             width: 100%;
-            height: 155px;
+            height: 225px;
             overflow: hidden;
             position: relative;
             border-radius: 2px;
@@ -232,20 +233,20 @@
 
             <div id="saveTheDateCard" class="card card-texture relative select-none">
                 
-                <!-- Övre textrader -->
-                <div class="pt-0.5 pb-1">
+                <!-- Övre textrad -->
+                <div class="pt-0.5 pb-0.5">
                     <p class="sans-subtle text-[9px] sm:text-[10px] green-header uppercase tracking-[0.35em] font-light">
                         BRÖLLOPSINBJUDAN
                     </p>
                 </div>
 
-                <!-- Huset i beskärt format -->
+                <!-- Huset med väl anpassad höjd -->
                 <div class="image-crop-container">
                     <img src="card.jpg" alt="Asa Herrgård">
                 </div>
 
                 <!-- Namn & Typografi -->
-                <div class="my-auto py-1 flex flex-col items-center w-full z-10">
+                <div class="my-auto py-0.5 flex flex-col items-center w-full z-10">
                     
                     <h2 class="font-serif text-2xl sm:text-3xl text-emerald-950 tracking-wider uppercase font-light leading-none">
                         IDA
@@ -255,11 +256,11 @@
                         &amp;
                     </div>
 
-                    <h2 class="font-serif text-2xl sm:text-3xl text-emerald-950 tracking-wider uppercase font-light leading-none mb-2">
+                    <h2 class="font-serif text-2xl sm:text-3xl text-emerald-950 tracking-wider uppercase font-light leading-none mb-1.5">
                         FRITJOF
                     </h2>
 
-                    <p class="sans-subtle text-[8px] sm:text-[9px] green-header uppercase tracking-[0.3em] mb-1">
+                    <p class="sans-subtle text-[8px] sm:text-[9px] green-header uppercase tracking-[0.3em] mb-0.5">
                         SAVE THE DATE
                     </p>
 
@@ -269,7 +270,7 @@
                 </div>
 
                 <!-- Inramad informationsbox längst ned -->
-                <div class="w-full px-4 mb-2 z-10">
+                <div class="w-full px-4 mb-1 z-10">
                     <div class="border border-[#C19A5B]/40 py-1.5 px-2 rounded-[1px] bg-white/40 backdrop-blur-[1px]">
                         <p class="sans-subtle text-[8px] sm:text-[9px] text-emerald-950 uppercase tracking-[0.2em]">
                             ASA HERRGÅRD
@@ -280,11 +281,10 @@
                     </div>
                 </div>
 
-                <!-- Skogsgröna Akvarellväxter & Blad i Vänster Hörn -->
+                <!-- Gröna Akvarellväxter & Blad i Vänster Hörn -->
                 <svg class="absolute bottom-0 left-0 w-24 sm:w-28 h-auto pointer-events-none opacity-85" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M 0 100 Q 30 70 15 35 Q 25 55 45 40" stroke="#3D5A45" stroke-width="1.2" fill="none" opacity="0.6"/>
                     <path d="M 0 100 Q 40 85 60 70" stroke="#4F6D57" stroke-width="1" fill="none" opacity="0.6"/>
-                    <!-- Blad -->
                     <path d="M 10 75 C 5 60 20 55 25 70 C 20 78 12 80 10 75 Z" fill="#4B6953" opacity="0.75"/>
                     <path d="M 22 55 C 18 42 32 40 34 52 C 30 60 24 60 22 55 Z" fill="#3D5A45" opacity="0.8"/>
                     <path d="M 38 42 C 35 30 48 30 48 40 C 44 46 40 46 38 42 Z" fill="#608069" opacity="0.7"/>
@@ -292,11 +292,10 @@
                     <path d="M 58 68 C 50 60 62 52 66 62 C 62 70 59 70 58 68 Z" fill="#3B5442" opacity="0.8"/>
                 </svg>
 
-                <!-- Skogsgröna Akvarellväxter & Blad i Höger Hörn -->
+                <!-- Gröna Akvarellväxter & Blad i Höger Hörn -->
                 <svg class="absolute bottom-0 right-0 w-24 sm:w-28 h-auto pointer-events-none opacity-85 transform scale-x-[-1]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M 0 100 Q 30 70 15 35 Q 25 55 45 40" stroke="#3D5A45" stroke-width="1.2" fill="none" opacity="0.6"/>
                     <path d="M 0 100 Q 40 85 60 70" stroke="#4F6D57" stroke-width="1" fill="none" opacity="0.6"/>
-                    <!-- Blad -->
                     <path d="M 10 75 C 5 60 20 55 25 70 C 20 78 12 80 10 75 Z" fill="#4B6953" opacity="0.75"/>
                     <path d="M 22 55 C 18 42 32 40 34 52 C 30 60 24 60 22 55 Z" fill="#3D5A45" opacity="0.8"/>
                     <path d="M 38 42 C 35 30 48 30 48 40 C 44 46 40 46 38 42 Z" fill="#608069" opacity="0.7"/>
