@@ -13,7 +13,14 @@
             font-family: 'Cormorant Garamond', serif;
             background-color: #EFECE6;
             color: #1C3325;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             overflow-x: hidden;
+            margin: 0;
+            padding: 1rem;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
@@ -27,57 +34,44 @@
             font-family: 'Great Vibes', cursive;
         }
 
-        /* 3D Scene Config */
         .scene {
-            perspective: 1400px;
+            perspective: 1500px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        /* Stående kuvert i porträttformat likt filmen */
         .envelope-container {
             position: relative;
-            width: 330px;
-            height: 235px;
+            width: 300px;
+            height: 420px;
             cursor: pointer;
             transform-style: preserve-3d;
-            transform: rotateX(6deg) rotateY(0deg);
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         @media (min-width: 640px) {
             .envelope-container {
-                width: 440px;
-                height: 300px;
+                width: 340px;
+                height: 476px;
             }
         }
 
-        .envelope-container:hover {
-            transform: rotateX(0deg) scale(1.02);
-        }
-
-        /* Embossed Fine-Paper Texture */
+        /* Präglad pappersstruktur */
         .embossed-paper {
             background-color: #FAF8F5;
             background-image: 
-                radial-gradient(#dcd5c7 0.8px, transparent 0.8px), 
-                radial-gradient(#dcd5c7 0.8px, #FAF8F5 0.8px);
+                radial-gradient(#d8d1c2 0.8px, transparent 0.8px), 
+                radial-gradient(#d8d1c2 0.8px, #FAF8F5 0.8px);
             background-size: 24px 24px;
             background-position: 0 0, 12px 12px;
             box-shadow: 0 20px 45px -10px rgba(0,0,0,0.15), 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .card-texture {
-            background: #FDFCF9;
-            box-shadow: inset 0 0 25px rgba(210, 205, 195, 0.25);
-        }
-
-        /* Envelope Back Structural Panels */
-        .envelope-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
             border-radius: 4px;
-            z-index: 1;
         }
 
+        /* Kuvertets toppklaff */
         .envelope-flap {
             position: absolute;
             top: 0;
@@ -88,82 +82,45 @@
             transform-style: preserve-3d;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 4;
+            pointer-events: none;
         }
 
         .flap-shape {
             width: 100%;
-            height: 58%;
-            background: #F5F1E8;
+            height: 48%;
+            background: #F4EFE6;
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             border-top: 1px solid rgba(255, 255, 255, 0.8);
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.06));
         }
 
-        .envelope-pocket {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 3;
-            pointer-events: none;
-        }
-
-        .pocket-bottom {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 60%;
-            background: linear-gradient(0deg, #EBE5D8 0%, #F3EDDF 100%);
-            clip-path: polygon(0 100%, 100% 100%, 50% 18%);
-        }
-
-        .pocket-left {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 52%;
-            height: 100%;
-            background: linear-gradient(90deg, #E6E0D2 0%, #EFEAE0 100%);
-            clip-path: polygon(0 0, 0 100%, 100% 100%);
-        }
-
-        .pocket-right {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 52%;
-            height: 100%;
-            background: linear-gradient(-90deg, #E6E0D2 0%, #EFEAE0 100%);
-            clip-path: polygon(100% 0, 0 100%, 100% 100%);
-        }
-
-        /* Burgundy Wax Seal */
+        /* Vaxsigill i mitten */
         .wax-seal {
             position: absolute;
             top: 48%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
+            width: 58px;
+            height: 58px;
             background: radial-gradient(circle at 35% 35%, #842626, #461414 80%);
             border-radius: 50%;
-            box-shadow: 0 8px 22px rgba(0,0,0,0.32), inset 0 2px 4px rgba(255,255,255,0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.32), inset 0 2px 4px rgba(255,255,255,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: transform 0.4s ease, opacity 0.4s ease;
-            z-index: 5;
+            z-index: 10;
         }
 
-        /* Main Card Layer Inside */
+        /* Inbjudningskortet inuti kuvertet */
         .card {
             position: absolute;
-            left: 4%;
-            top: 4%;
-            width: 92%;
-            height: 92%;
+            left: 3%;
+            top: 3%;
+            width: 94%;
+            height: 94%;
+            background: #FDFCF9;
             border-radius: 3px;
             transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s 0.4s;
             z-index: 2;
@@ -172,13 +129,13 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 1.25rem 1rem 1rem 1rem;
+            padding: 1.5rem 1rem 1rem 1rem;
             text-align: center;
             border: 1px solid rgba(190, 180, 165, 0.35);
             overflow: hidden;
         }
 
-        /* Open State Animations */
+        /* När kuvertet öppnas */
         .open .envelope-flap {
             transform: rotateX(180deg);
             z-index: 1;
@@ -190,6 +147,7 @@
             transform: translate(-50%, -50%) scale(0.5);
         }
 
+        /* Kortet glider upp och hamnar i fullt fokus på skärmen */
         .card-extracted {
             position: fixed !important;
             top: 50% !important;
@@ -198,16 +156,15 @@
             width: 90vw !important;
             max-width: 390px !important;
             height: auto !important;
-            aspect-ratio: 1 / 1.65 !important;
+            aspect-ratio: 1 / 1.62 !important;
             z-index: 50 !important;
-            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.3), 0 0 0 100vw rgba(239, 236, 230, 0.88) !important;
+            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.3), 0 0 0 100vw rgba(239, 236, 230, 0.9) !important;
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), width 0.8s ease !important;
         }
 
-        /* Image Cropping Rules */
         .image-crop-container {
             width: 100%;
-            height: 195px;
+            height: 180px;
             overflow: hidden;
             position: relative;
             border-radius: 2px;
@@ -232,42 +189,35 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between items-center p-4 sm:p-6 selection:bg-emerald-100">
+<body>
 
     <!-- Ljudspelare för Lord Huron - The Night We Met -->
     <audio id="bgMusic" src="background-music.mp3" preload="auto" loop></audio>
 
-    <!-- Musikspelsknapp i övre hörnet -->
+    <!-- Musikknapp -->
     <button onclick="toggleAudio()" class="fixed top-4 right-4 z-50 p-2.5 rounded-full bg-white/80 backdrop-blur-md border border-stone-300 text-stone-700 hover:text-emerald-950 transition-all shadow-sm">
         <svg id="musicIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
         </svg>
     </button>
 
-    <header class="w-full max-w-md text-center pt-2 sm:pt-4 opacity-80">
-        <span class="sans-subtle text-[10px] sm:text-xs text-emerald-950 uppercase tracking-[0.3em]">Save the Date</span>
-    </header>
-
-    <main class="scene my-auto py-4 w-full flex flex-col items-center justify-center">
-        
-        <div id="envelopeWrapper" class="envelope-container" onclick="openEnvelope()">
+    <main class="scene my-auto">
+        <div id="envelopeWrapper" class="envelope-container embossed-paper" onclick="openEnvelope()">
             
-            <div class="envelope-back embossed-paper"></div>
-
-            <div id="saveTheDateCard" class="card card-texture relative select-none">
-                
+            <!-- Inbjudningskortet som ligger inuti kuvertet -->
+            <div id="saveTheDateCard" class="card select-none">
                 <div class="pt-0.5 pb-0.5">
                     <p class="font-serif italic text-xs sm:text-sm text-emerald-900/80">
                         Save the date
                     </p>
                 </div>
 
-                <!-- Herrgård på kortet -->
+                <!-- Herrgård -->
                 <div class="image-crop-container my-1">
                     <img src="card.jpg" alt="Asa Herrgård">
                 </div>
 
-                <!-- Skriptnamn -->
+                <!-- Namn -->
                 <div class="my-auto py-0.5 flex flex-col items-center w-full z-10">
                     <h2 class="font-script text-4xl sm:text-5xl text-emerald-950 leading-tight">
                         Ida <span class="text-3xl sm:text-4xl">&amp;</span> Fritjof
@@ -283,27 +233,27 @@
                 </div>
 
                 <!-- Live Countdown -->
-                <div class="w-full px-4 my-1.5 z-10">
-                    <div class="w-12 h-[1px] bg-emerald-900/20 mx-auto mb-2"></div>
-                    <div class="grid grid-cols-3 gap-2 text-center max-w-[200px] mx-auto">
+                <div class="w-full px-4 my-1 z-10">
+                    <div class="w-12 h-[1px] bg-emerald-900/20 mx-auto mb-1.5"></div>
+                    <div class="grid grid-cols-3 gap-2 text-center max-w-[190px] mx-auto">
                         <div>
-                            <span id="days" class="font-serif text-lg sm:text-xl font-medium text-emerald-950">---</span>
-                            <p class="sans-subtle text-[8px] text-emerald-800/70 uppercase tracking-widest">dagar</p>
+                            <span id="days" class="font-serif text-base sm:text-lg font-medium text-emerald-950">---</span>
+                            <p class="sans-subtle text-[7px] text-emerald-800/70 uppercase tracking-widest">dagar</p>
                         </div>
                         <div>
-                            <span id="hours" class="font-serif text-lg sm:text-xl font-medium text-emerald-950">--</span>
-                            <p class="sans-subtle text-[8px] text-emerald-800/70 uppercase tracking-widest">timmar</p>
+                            <span id="hours" class="font-serif text-base sm:text-lg font-medium text-emerald-950">--</span>
+                            <p class="sans-subtle text-[7px] text-emerald-800/70 uppercase tracking-widest">timmar</p>
                         </div>
                         <div>
-                            <span id="minutes" class="font-serif text-lg sm:text-xl font-medium text-emerald-950">--</span>
-                            <p class="sans-subtle text-[8px] text-emerald-800/70 uppercase tracking-widest">minuter</p>
+                            <span id="minutes" class="font-serif text-base sm:text-lg font-medium text-emerald-950">--</span>
+                            <p class="sans-subtle text-[7px] text-emerald-800/70 uppercase tracking-widest">minuter</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Kalender-knapp -->
                 <div class="w-full px-4 mb-1 z-10">
-                    <p class="font-serif italic text-xs text-emerald-900/80 mb-2">
+                    <p class="font-serif italic text-[11px] text-emerald-900/80 mb-1.5">
                         Vi gifter oss på Asa Herrgård. Spara lördagen åt oss!
                     </p>
 
@@ -315,53 +265,40 @@
                     </button>
                 </div>
 
-                <!-- Gröna Akvarellblad -->
-                <svg class="absolute bottom-0 left-0 w-24 sm:w-28 h-auto pointer-events-none opacity-80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Gröna Akvarellblad i hörnen -->
+                <svg class="absolute bottom-0 left-0 w-20 sm:w-24 h-auto pointer-events-none opacity-80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M 0 100 Q 30 70 15 35 Q 25 55 45 40" stroke="#3D5A45" stroke-width="1.2" fill="none" opacity="0.6"/>
                     <path d="M 10 75 C 5 60 20 55 25 70 C 20 78 12 80 10 75 Z" fill="#4B6953" opacity="0.75"/>
                     <path d="M 22 55 C 18 42 32 40 34 52 C 30 60 24 60 22 55 Z" fill="#3D5A45" opacity="0.8"/>
-                    <path d="M 38 42 C 35 30 48 30 48 40 C 44 46 40 46 38 42 Z" fill="#608069" opacity="0.7"/>
                 </svg>
 
-                <svg class="absolute bottom-0 right-0 w-24 sm:w-28 h-auto pointer-events-none opacity-80 transform scale-x-[-1]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="absolute bottom-0 right-0 w-20 sm:w-24 h-auto pointer-events-none opacity-80 transform scale-x-[-1]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M 0 100 Q 30 70 15 35 Q 25 55 45 40" stroke="#3D5A45" stroke-width="1.2" fill="none" opacity="0.6"/>
                     <path d="M 10 75 C 5 60 20 55 25 70 C 20 78 12 80 10 75 Z" fill="#4B6953" opacity="0.75"/>
                     <path d="M 22 55 C 18 42 32 40 34 52 C 30 60 24 60 22 55 Z" fill="#3D5A45" opacity="0.8"/>
-                    <path d="M 38 42 C 35 30 48 30 48 40 C 44 46 40 46 38 42 Z" fill="#608069" opacity="0.7"/>
                 </svg>
-
             </div>
 
-            <!-- Kuvertficka i stängt läge (Lysela-stil) -->
-            <div class="envelope-pocket">
-                <div class="pocket-left"></div>
-                <div class="pocket-right"></div>
-                <div class="pocket-bottom flex flex-col justify-end items-center pb-3 text-center pointer-events-none">
-                    <p class="font-script text-lg sm:text-xl text-emerald-950/80 leading-none">Ida &amp; Fritjof</p>
-                    <p class="sans-subtle text-[7px] text-emerald-900/60 uppercase tracking-[0.2em] mt-0.5">LÖRDAG 4 SEPTEMBER 2027 • ASA HERRGÅRD</p>
-                </div>
-            </div>
-
+            <!-- Kuvertflik -->
             <div class="envelope-flap">
                 <div class="flap-shape"></div>
             </div>
 
-            <!-- Vaxsigill -->
-            <div id="waxSeal" class="wax-seal">
+            <!-- Vaxsigill med "Tap to open"-känsla -->
+            <div id="waxSeal" class="wax-seal" onclick="openEnvelope()">
                 <span class="font-script text-amber-100 text-2xl select-none font-bold">I&amp;F</span>
             </div>
 
         </div>
-
-        <div id="tapPrompt" class="mt-6 text-center animate-prompt transition-opacity duration-500">
-            <button onclick="openEnvelope()" class="sans-subtle text-[11px] text-stone-600 tracking-[0.2em] uppercase hover:text-stone-900 transition-colors">
-                ÖPPNA KUVERTET
-            </button>
-        </div>
-
     </main>
 
-    <footer class="w-full max-w-md text-center pb-3 sm:pb-5">
+    <div id="tapPrompt" class="mt-4 text-center animate-prompt">
+        <button onclick="openEnvelope()" class="sans-subtle text-[11px] text-stone-600 tracking-[0.2em] uppercase hover:text-stone-900 transition-colors">
+            TRYCK PÅ SIGILLET FÖR ATT ÖPPNA
+        </button>
+    </div>
+
+    <footer class="mt-4 text-center">
         <button id="resetBtn" onclick="resetEnvelope(event)" class="opacity-0 pointer-events-none sans-subtle text-[10px] text-stone-500 hover:text-stone-800 tracking-[0.2em] uppercase transition-all duration-500 border-b border-stone-300 pb-0.5">
             Stäng kuvertet igen
         </button>
@@ -398,7 +335,6 @@
             if (isOpen) return;
             isOpen = true;
 
-            // Starta musiken vid klick
             const audio = document.getElementById('bgMusic');
             if (audio) {
                 audio.play().catch(err => console.log("Ljud kunde inte auto-spelas:", err));
@@ -413,14 +349,14 @@
             prompt.style.opacity = '0';
 
             setTimeout(() => {
-                card.style.transform = 'translateY(-60%)';
+                card.style.transform = 'translateY(-52%)';
                 card.style.zIndex = '10';
-            }, 600);
+            }, 500);
 
             setTimeout(() => {
                 card.classList.add('card-extracted');
                 resetBtn.classList.remove('opacity-0', 'pointer-events-none');
-            }, 1200);
+            }, 1100);
         }
 
         function resetEnvelope(e) {
@@ -436,17 +372,13 @@
             resetBtn.classList.add('opacity-0', 'pointer-events-none');
 
             card.classList.remove('card-extracted');
-            card.style.transform = 'translateY(-60%)';
+            card.style.transform = 'translateY(0)';
             card.style.zIndex = '2';
-
-            setTimeout(() => {
-                card.style.transform = 'translateY(0)';
-            }, 400);
 
             setTimeout(() => {
                 wrapper.classList.remove('open');
                 prompt.style.opacity = '1';
-            }, 900);
+            }, 800);
         }
 
         function toggleAudio() {
