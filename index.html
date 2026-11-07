@@ -13,14 +13,16 @@
             font-family: 'Cormorant Garamond', serif;
             background-color: #EFECE6;
             color: #1C3325;
-            min-height: 100vh;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
+            overflow: hidden;
             margin: 0;
-            padding: 1rem;
+            padding: 0;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
@@ -35,40 +37,78 @@
         }
 
         .scene {
-            perspective: 1500px;
+            perspective: 1600px;
             width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Kuvert som fyller skärmen i stående mobilformat */
+        .envelope-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            max-width: 480px;
+            max-height: 850px;
+            cursor: pointer;
+            transform-style: preserve-3d;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Stående kuvert i porträttformat likt filmen */
-        .envelope-container {
-            position: relative;
-            width: 300px;
-            height: 420px;
-            cursor: pointer;
-            transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        @media (min-width: 640px) {
-            .envelope-container {
-                width: 340px;
-                height: 476px;
-            }
-        }
-
-        /* Präglad pappersstruktur */
+        /* Präglad pappersstruktur för kuvertet */
         .embossed-paper {
+            position: absolute;
+            inset: 0;
             background-color: #FAF8F5;
             background-image: 
                 radial-gradient(#d8d1c2 0.8px, transparent 0.8px), 
                 radial-gradient(#d8d1c2 0.8px, #FAF8F5 0.8px);
-            background-size: 24px 24px;
-            background-position: 0 0, 12px 12px;
-            box-shadow: 0 20px 45px -10px rgba(0,0,0,0.15), 0 5px 15px rgba(0,0,0,0.05);
-            border-radius: 4px;
+            background-size: 26px 26px;
+            background-position: 0 0, 13px 13px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+        }
+
+        /* Kuvertets sidor och ficka som döljer kortet */
+        .envelope-pocket-left {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 55%;
+            height: 70%;
+            background: linear-gradient(135deg, #EBE5D8 0%, #F3EDDF 100%);
+            clip-path: polygon(0 0, 0 100%, 100% 100%);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .envelope-pocket-right {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 55%;
+            height: 70%;
+            background: linear-gradient(-135deg, #EBE5D8 0%, #F3EDDF 100%);
+            clip-path: polygon(100% 0, 0 100%, 100% 100%);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .envelope-pocket-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 55%;
+            background: linear-gradient(0deg, #E4DDCF 0%, #EFE9DC 100%);
+            clip-path: polygon(0 100%, 100% 100%, 50% 15%);
+            z-index: 3;
+            pointer-events: none;
         }
 
         /* Kuvertets toppklaff */
@@ -77,21 +117,15 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 52%;
+            background: #F4EFE6;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
             transform-origin: top center;
             transform-style: preserve-3d;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 4;
-            pointer-events: none;
-        }
-
-        .flap-shape {
-            width: 100%;
-            height: 48%;
-            background: #F4EFE6;
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            border-top: 1px solid rgba(255, 255, 255, 0.8);
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.06));
+            z-index: 6;
+            border-top: 1px solid rgba(255, 255, 255, 0.9);
+            filter: drop-shadow(0 6px 8px rgba(0,0,0,0.08));
         }
 
         /* Vaxsigill i mitten */
@@ -100,11 +134,11 @@
             top: 48%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 58px;
-            height: 58px;
+            width: 64px;
+            height: 64px;
             background: radial-gradient(circle at 35% 35%, #842626, #461414 80%);
             border-radius: 50%;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.32), inset 0 2px 4px rgba(255,255,255,0.3);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.35), inset 0 2px 4px rgba(255,255,255,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -113,26 +147,29 @@
             z-index: 10;
         }
 
-        /* Inbjudningskortet inuti kuvertet */
+        /* Inbjudningskortet som ligger helt inuti kuvertet från början */
         .card {
             position: absolute;
-            left: 3%;
-            top: 3%;
-            width: 94%;
-            height: 94%;
+            width: 88%;
+            max-width: 390px;
+            height: 84%;
+            max-height: 640px;
             background: #FDFCF9;
-            border-radius: 3px;
-            transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s 0.4s;
-            z-index: 2;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 1rem 1rem 1rem;
+            padding: 1.5rem 1.2rem 1.2rem 1.2rem;
             text-align: center;
-            border: 1px solid rgba(190, 180, 165, 0.35);
-            overflow: hidden;
+            border: 1px solid rgba(190, 180, 165, 0.4);
+            z-index: 2;
+            bottom: 6%;
+            transform: translateY(35%) scale(0.92);
+            opacity: 0;
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease, z-index 0s;
+            pointer-events: none;
         }
 
         /* När kuvertet öppnas */
@@ -147,24 +184,17 @@
             transform: translate(-50%, -50%) scale(0.5);
         }
 
-        /* Kortet glider upp och hamnar i fullt fokus på skärmen */
-        .card-extracted {
-            position: fixed !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) scale(1) !important;
-            width: 90vw !important;
-            max-width: 390px !important;
-            height: auto !important;
-            aspect-ratio: 1 / 1.62 !important;
-            z-index: 50 !important;
-            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.3), 0 0 0 100vw rgba(239, 236, 230, 0.9) !important;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), width 0.8s ease !important;
+        .open .card {
+            transform: translateY(0%) scale(1);
+            opacity: 1;
+            z-index: 50;
+            pointer-events: auto;
+            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.35);
         }
 
         .image-crop-container {
             width: 100%;
-            height: 180px;
+            height: 195px;
             overflow: hidden;
             position: relative;
             border-radius: 2px;
@@ -195,16 +225,16 @@
     <audio id="bgMusic" src="background-music.mp3" preload="auto" loop></audio>
 
     <!-- Musikknapp -->
-    <button onclick="toggleAudio()" class="fixed top-4 right-4 z-50 p-2.5 rounded-full bg-white/80 backdrop-blur-md border border-stone-300 text-stone-700 hover:text-emerald-950 transition-all shadow-sm">
+    <button onclick="toggleAudio()" class="fixed top-4 right-4 z-[100] p-2.5 rounded-full bg-white/80 backdrop-blur-md border border-stone-300 text-stone-700 hover:text-emerald-950 transition-all shadow-sm">
         <svg id="musicIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
         </svg>
     </button>
 
-    <main class="scene my-auto">
+    <main class="scene">
         <div id="envelopeWrapper" class="envelope-container embossed-paper" onclick="openEnvelope()">
             
-            <!-- Inbjudningskortet som ligger inuti kuvertet -->
+            <!-- Inbjudningskortet dolt inuti kuvertet -->
             <div id="saveTheDateCard" class="card select-none">
                 <div class="pt-0.5 pb-0.5">
                     <p class="font-serif italic text-xs sm:text-sm text-emerald-900/80">
@@ -279,30 +309,29 @@
                 </svg>
             </div>
 
-            <!-- Kuvertflik -->
-            <div class="envelope-flap">
-                <div class="flap-shape"></div>
+            <!-- Kuvertfickor -->
+            <div class="envelope-pocket-left"></div>
+            <div class="envelope-pocket-right"></div>
+            <div class="envelope-pocket-bottom flex flex-col justify-end items-center pb-8 text-center pointer-events-none z-40">
+                <p class="font-script text-xl sm:text-2xl text-emerald-950/80 leading-none">Ida &amp; Fritjof</p>
+                <p class="sans-subtle text-[8px] text-emerald-900/60 uppercase tracking-[0.25em] mt-1">LÖRDAG 4 SEPTEMBER 2027 • ASA HERRGÅRD</p>
+                <div id="tapPrompt" class="mt-3 animate-prompt pointer-events-auto cursor-pointer" onclick="openEnvelope()">
+                    <span class="sans-subtle text-[10px] text-stone-600 tracking-[0.2em] uppercase hover:text-stone-900 border-b border-stone-400/50 pb-0.5">
+                        TRYCK PÅ SIGILLET FÖR ATT ÖPPNA
+                    </span>
+                </div>
             </div>
 
-            <!-- Vaxsigill med "Tap to open"-känsla -->
+            <!-- Kuvertets toppklaff -->
+            <div class="envelope-flap"></div>
+
+            <!-- Vaxsigill -->
             <div id="waxSeal" class="wax-seal" onclick="openEnvelope()">
                 <span class="font-script text-amber-100 text-2xl select-none font-bold">I&amp;F</span>
             </div>
 
         </div>
     </main>
-
-    <div id="tapPrompt" class="mt-4 text-center animate-prompt">
-        <button onclick="openEnvelope()" class="sans-subtle text-[11px] text-stone-600 tracking-[0.2em] uppercase hover:text-stone-900 transition-colors">
-            TRYCK PÅ SIGILLET FÖR ATT ÖPPNA
-        </button>
-    </div>
-
-    <footer class="mt-4 text-center">
-        <button id="resetBtn" onclick="resetEnvelope(event)" class="opacity-0 pointer-events-none sans-subtle text-[10px] text-stone-500 hover:text-stone-800 tracking-[0.2em] uppercase transition-all duration-500 border-b border-stone-300 pb-0.5">
-            Stäng kuvertet igen
-        </button>
-    </footer>
 
     <script>
         let isOpen = false;
@@ -341,44 +370,7 @@
             }
 
             const wrapper = document.getElementById('envelopeWrapper');
-            const card = document.getElementById('saveTheDateCard');
-            const prompt = document.getElementById('tapPrompt');
-            const resetBtn = document.getElementById('resetBtn');
-
             wrapper.classList.add('open');
-            prompt.style.opacity = '0';
-
-            setTimeout(() => {
-                card.style.transform = 'translateY(-52%)';
-                card.style.zIndex = '10';
-            }, 500);
-
-            setTimeout(() => {
-                card.classList.add('card-extracted');
-                resetBtn.classList.remove('opacity-0', 'pointer-events-none');
-            }, 1100);
-        }
-
-        function resetEnvelope(e) {
-            e.stopPropagation();
-            if (!isOpen) return;
-            isOpen = false;
-
-            const wrapper = document.getElementById('envelopeWrapper');
-            const card = document.getElementById('saveTheDateCard');
-            const prompt = document.getElementById('tapPrompt');
-            const resetBtn = document.getElementById('resetBtn');
-
-            resetBtn.classList.add('opacity-0', 'pointer-events-none');
-
-            card.classList.remove('card-extracted');
-            card.style.transform = 'translateY(0)';
-            card.style.zIndex = '2';
-
-            setTimeout(() => {
-                wrapper.classList.remove('open');
-                prompt.style.opacity = '1';
-            }, 800);
         }
 
         function toggleAudio() {
