@@ -60,110 +60,17 @@
             align-items: center;
         }
 
-        /* Realistisk pappers- och linnetextur för kuvertet */
-        .embossed-paper {
+        /* Använder din uppladdade bild (envelope.jpg) som kuvertbakgrund */
+        .real-envelope-bg {
             position: absolute;
             inset: 0;
-            background-color: #F7F4EE;
-            background-image: 
-                linear-gradient(90deg, rgba(210,200,185,0.15) 1px, transparent 1px),
-                linear-gradient(0deg, rgba(210,200,185,0.15) 1px, transparent 1px),
-                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.8), rgba(240,234,222,0.4));
-            background-size: 8px 8px, 8px 8px, 100% 100%;
-            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.18), inset 0 0 40px rgba(215,205,190,0.3);
+            background-image: url('envelope.jpg');
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25);
         }
 
-        .envelope-pocket-left {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 55%;
-            height: 70%;
-            background: linear-gradient(135deg, #E8E2D4 0%, #F1EBE0 100%);
-            clip-path: polygon(0 0, 0 100%, 100% 100%);
-            filter: drop-shadow(2px -2px 3px rgba(0,0,0,0.04));
-            z-index: 3;
-            pointer-events: none;
-        }
-
-        .envelope-pocket-right {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 55%;
-            height: 70%;
-            background: linear-gradient(-135deg, #E8E2D4 0%, #F1EBE0 100%);
-            clip-path: polygon(100% 0, 0 100%, 100% 100%);
-            filter: drop-shadow(-2px -2px 3px rgba(0,0,0,0.04));
-            z-index: 3;
-            pointer-events: none;
-        }
-
-        .envelope-pocket-bottom {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 55%;
-            background: linear-gradient(0deg, #E1D9CA 0%, #EFE8DC 100%);
-            clip-path: polygon(0 100%, 100% 100%, 50% 15%);
-            filter: drop-shadow(0 -3px 5px rgba(0,0,0,0.05));
-            z-index: 3;
-            pointer-events: none;
-        }
-
-        /* Toppklaff med damasmönster och mjuk pappersskugga */
-        .envelope-flap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 52%;
-            background-color: #F3EEE4;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23dcd2bf' fill-opacity='0.45' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            transform-origin: top center;
-            transform-style: preserve-3d;
-            transition: transform 2.2s cubic-bezier(0.22, 1, 0.36, 1);
-            z-index: 6;
-            border-top: 1px solid rgba(255, 255, 255, 0.9);
-            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.12));
-        }
-
-        /* Verklighetstroget organiskt vaxsigill */
-        .wax-seal {
-            position: absolute;
-            top: 48%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-3deg);
-            width: 72px;
-            height: 72px;
-            background: radial-gradient(circle at 32% 28%, #FAF6EE 0%, #E4D9C7 55%, #C2B39A 90%);
-            border-radius: 42% 58% 62% 38% / 53% 45% 55% 47%;
-            box-shadow: 
-                0 10px 24px rgba(0,0,0,0.22),
-                0 3px 6px rgba(0,0,0,0.12),
-                inset 0 3px 6px rgba(255,255,255,0.9),
-                inset 0 -4px 8px rgba(150,135,115,0.45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 1s ease, opacity 1s ease;
-            z-index: 10;
-        }
-
-        .wax-seal::after {
-            content: '';
-            position: absolute;
-            inset: 6px;
-            border-radius: 40% 60% 55% 45% / 48% 52% 48% 52%;
-            border: 1px solid rgba(180, 165, 145, 0.4);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
-            pointer-events: none;
-        }
-
-        /* Långsam och mjuk rörelse för kortet (3.0s) med fördröjning */
+        /* Långsam och mjuk rörelse för kortet (3.0s) */
         .card {
             position: absolute;
             width: 88%;
@@ -188,15 +95,10 @@
             pointer-events: none;
         }
 
-        .open .envelope-flap {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-
-        .open .wax-seal {
-            opacity: 0;
+        .open .real-envelope-bg {
+            opacity: 0.15;
+            transition: opacity 1.5s ease;
             pointer-events: none;
-            transform: translate(-50%, -50%) scale(0.5);
         }
 
         .open .card {
@@ -207,13 +109,16 @@
             box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.35);
         }
 
+        /* Mjukare, tonade kanter (vignette / fade) runt den markerade bilden */
         .image-crop-container {
             width: 100%;
             height: 195px;
             overflow: hidden;
             position: relative;
-            border-radius: 2px;
+            border-radius: 6px;
             flex-shrink: 0;
+            -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, #000 70%, transparent 100%);
+            mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, #000 70%, transparent 100%);
         }
 
         .image-crop-container img {
@@ -237,8 +142,11 @@
 <body>
 
     <main class="scene">
-        <div id="envelopeWrapper" class="envelope-container embossed-paper" onclick="openEnvelope()">
+        <div id="envelopeWrapper" class="envelope-container" onclick="openEnvelope()">
             
+            <!-- Bakgrunden styrs av din uppladdade bild envelope.jpg -->
+            <div class="real-envelope-bg"></div>
+
             <div id="saveTheDateCard" class="card select-none">
                 <div class="pt-0.5 pb-0.5">
                     <p class="font-serif italic text-xs sm:text-sm text-emerald-900/80">
@@ -246,6 +154,7 @@
                     </p>
                 </div>
 
+                <!-- Herrgårdsbild med mjukare, tonade kanter -->
                 <div class="image-crop-container my-1">
                     <img src="card.jpg" alt="Asa Herrgård">
                 </div>
@@ -305,24 +214,6 @@
                     <path d="M 0 100 Q 30 70 15 35 Q 25 55 45 40" stroke="#3D5A45" stroke-width="1.2" fill="none" opacity="0.6"/>
                     <path d="M 10 75 C 5 60 20 55 25 70 C 20 78 12 80 10 75 Z" fill="#4B6953" opacity="0.75"/>
                     <path d="M 22 55 C 18 42 32 40 34 52 C 30 60 24 60 22 55 Z" fill="#3D5A45" opacity="0.8"/>
-                </svg>
-            </div>
-
-            <div class="envelope-pocket-left"></div>
-            <div class="envelope-pocket-right"></div>
-            <div class="envelope-pocket-bottom flex flex-col justify-end items-center pb-8 text-center pointer-events-none z-40">
-                <div id="tapPrompt" class="animate-prompt pointer-events-auto cursor-pointer" onclick="openEnvelope()">
-                    <span class="sans-subtle text-[10px] text-stone-600 tracking-[0.25em] uppercase hover:text-stone-900 pb-0.5">
-                        TAP THE SEAL TO OPEN
-                    </span>
-                </div>
-            </div>
-
-            <div class="envelope-flap"></div>
-
-            <div id="waxSeal" class="wax-seal" onclick="openEnvelope()">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="#A89A84" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
             </div>
 
