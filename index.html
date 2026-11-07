@@ -27,26 +27,33 @@
             font-family: 'Great Vibes', cursive;
         }
 
+        /* 3D Scene Config */
         .scene {
             perspective: 1400px;
         }
 
-        /* Präglat botaniskt mönster på kuvertet i Lysela-stil */
-        .envelope-wrapper {
+        .envelope-container {
             position: relative;
-            width: 320px;
-            height: 230px;
+            width: 330px;
+            height: 235px;
             cursor: pointer;
+            transform-style: preserve-3d;
+            transform: rotateX(6deg) rotateY(0deg);
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         @media (min-width: 640px) {
-            .envelope-wrapper {
-                width: 420px;
-                height: 290px;
+            .envelope-container {
+                width: 440px;
+                height: 300px;
             }
         }
 
+        .envelope-container:hover {
+            transform: rotateX(0deg) scale(1.02);
+        }
+
+        /* Embossed Fine-Paper Texture */
         .embossed-paper {
             background-color: #FAF8F5;
             background-image: 
@@ -54,7 +61,7 @@
                 radial-gradient(#dcd5c7 0.8px, #FAF8F5 0.8px);
             background-size: 24px 24px;
             background-position: 0 0, 12px 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 45px -10px rgba(0,0,0,0.15), 0 5px 15px rgba(0,0,0,0.05);
         }
 
         .card-texture {
@@ -62,11 +69,13 @@
             box-shadow: inset 0 0 25px rgba(210, 205, 195, 0.25);
         }
 
+        /* Envelope Back Structural Panels */
         .envelope-back {
             position: absolute;
             width: 100%;
             height: 100%;
             border-radius: 4px;
+            z-index: 1;
         }
 
         .envelope-flap {
@@ -87,7 +96,7 @@
             background: #F5F1E8;
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             border-top: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.06));
         }
 
         .envelope-pocket {
@@ -129,16 +138,17 @@
             clip-path: polygon(100% 0, 0 100%, 100% 100%);
         }
 
+        /* Burgundy Wax Seal */
         .wax-seal {
             position: absolute;
             top: 48%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 58px;
-            height: 58px;
-            background: radial-gradient(circle at 35% 35%, #7D2626, #4A1515 80%);
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 35% 35%, #842626, #461414 80%);
             border-radius: 50%;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.28), inset 0 2px 4px rgba(255,255,255,0.3);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.32), inset 0 2px 4px rgba(255,255,255,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -147,6 +157,7 @@
             z-index: 5;
         }
 
+        /* Main Card Layer Inside */
         .card {
             position: absolute;
             left: 4%;
@@ -167,6 +178,7 @@
             overflow: hidden;
         }
 
+        /* Open State Animations */
         .open .envelope-flap {
             transform: rotateX(180deg);
             z-index: 1;
@@ -178,7 +190,6 @@
             transform: translate(-50%, -50%) scale(0.5);
         }
 
-        /* Kortet dras ut och lägger sig snyggt i fokus precis som på Lysela */
         .card-extracted {
             position: fixed !important;
             top: 50% !important;
@@ -193,6 +204,7 @@
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), width 0.8s ease !important;
         }
 
+        /* Image Cropping Rules */
         .image-crop-container {
             width: 100%;
             height: 195px;
@@ -222,13 +234,23 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between items-center p-4 sm:p-6 selection:bg-emerald-100">
 
+    <!-- Ljudspelare för Lord Huron - The Night We Met -->
+    <audio id="bgMusic" src="background-music.mp3" preload="auto" loop></audio>
+
+    <!-- Musikspelsknapp i övre hörnet -->
+    <button onclick="toggleAudio()" class="fixed top-4 right-4 z-50 p-2.5 rounded-full bg-white/80 backdrop-blur-md border border-stone-300 text-stone-700 hover:text-emerald-950 transition-all shadow-sm">
+        <svg id="musicIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+        </svg>
+    </button>
+
     <header class="w-full max-w-md text-center pt-2 sm:pt-4 opacity-80">
         <span class="sans-subtle text-[10px] sm:text-xs text-emerald-950 uppercase tracking-[0.3em]">Save the Date</span>
     </header>
 
     <main class="scene my-auto py-4 w-full flex flex-col items-center justify-center">
         
-        <div id="envelopeWrapper" class="envelope-wrapper" onclick="openEnvelope()">
+        <div id="envelopeWrapper" class="envelope-container" onclick="openEnvelope()">
             
             <div class="envelope-back embossed-paper"></div>
 
@@ -240,12 +262,12 @@
                     </p>
                 </div>
 
-                <!-- Herrgårdsbilden -->
+                <!-- Herrgård på kortet -->
                 <div class="image-crop-container my-1">
                     <img src="card.jpg" alt="Asa Herrgård">
                 </div>
 
-                <!-- Namn i klassisk skriptstil -->
+                <!-- Skriptnamn -->
                 <div class="my-auto py-0.5 flex flex-col items-center w-full z-10">
                     <h2 class="font-script text-4xl sm:text-5xl text-emerald-950 leading-tight">
                         Ida <span class="text-3xl sm:text-4xl">&amp;</span> Fritjof
@@ -260,7 +282,7 @@
                     </p>
                 </div>
 
-                <!-- Live-nedräknare -->
+                <!-- Live Countdown -->
                 <div class="w-full px-4 my-1.5 z-10">
                     <div class="w-12 h-[1px] bg-emerald-900/20 mx-auto mb-2"></div>
                     <div class="grid grid-cols-3 gap-2 text-center max-w-[200px] mx-auto">
@@ -279,7 +301,7 @@
                     </div>
                 </div>
 
-                <!-- Text och Kalender-knapp -->
+                <!-- Kalender-knapp -->
                 <div class="w-full px-4 mb-1 z-10">
                     <p class="font-serif italic text-xs text-emerald-900/80 mb-2">
                         Vi gifter oss på Asa Herrgård. Spara lördagen åt oss!
@@ -293,7 +315,7 @@
                     </button>
                 </div>
 
-                <!-- Gröna botaniska blad i hörnen -->
+                <!-- Gröna Akvarellblad -->
                 <svg class="absolute bottom-0 left-0 w-24 sm:w-28 h-auto pointer-events-none opacity-80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M 0 100 Q 30 70 15 35 Q 25 55 45 40" stroke="#3D5A45" stroke-width="1.2" fill="none" opacity="0.6"/>
                     <path d="M 10 75 C 5 60 20 55 25 70 C 20 78 12 80 10 75 Z" fill="#4B6953" opacity="0.75"/>
@@ -310,7 +332,7 @@
 
             </div>
 
-            <!-- Kuvertfickans tryckta text i stängt läge (Lysela-stil) -->
+            <!-- Kuvertficka i stängt läge (Lysela-stil) -->
             <div class="envelope-pocket">
                 <div class="pocket-left"></div>
                 <div class="pocket-right"></div>
@@ -324,9 +346,9 @@
                 <div class="flap-shape"></div>
             </div>
 
-            <!-- Vaxsigill med I&F -->
+            <!-- Vaxsigill -->
             <div id="waxSeal" class="wax-seal">
-                <span class="font-script text-amber-100 text-xl select-none font-bold">I&amp;F</span>
+                <span class="font-script text-amber-100 text-2xl select-none font-bold">I&amp;F</span>
             </div>
 
         </div>
@@ -376,6 +398,12 @@
             if (isOpen) return;
             isOpen = true;
 
+            // Starta musiken vid klick
+            const audio = document.getElementById('bgMusic');
+            if (audio) {
+                audio.play().catch(err => console.log("Ljud kunde inte auto-spelas:", err));
+            }
+
             const wrapper = document.getElementById('envelopeWrapper');
             const card = document.getElementById('saveTheDateCard');
             const prompt = document.getElementById('tapPrompt');
@@ -419,6 +447,16 @@
                 wrapper.classList.remove('open');
                 prompt.style.opacity = '1';
             }, 900);
+        }
+
+        function toggleAudio() {
+            const audio = document.getElementById('bgMusic');
+            if (!audio) return;
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
         }
 
         function addToCalendar(e) {
