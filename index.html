@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Cormorant Garamond', serif;
@@ -20,7 +20,11 @@
 
         .sans-subtle {
             font-family: 'Montserrat', sans-serif;
-            letter-spacing: 0.25em;
+            letter-spacing: 0.2em;
+        }
+
+        .font-script {
+            font-family: 'Great Vibes', cursive;
         }
 
         .scene {
@@ -42,20 +46,26 @@
             }
         }
 
+        /* Subtelt präglat botaniskt mönster i kuvertets papper */
+        .embossed-paper {
+            background-color: #EDE8DF;
+            background-image: radial-gradient(#d5cebe 0.75px, transparent 0.75px), radial-gradient(#d5cebe 0.75px, #EDE8DF 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+
         .card-texture {
             background: #FDFCF9;
             background-image: 
                 radial-gradient(circle at 10% 90%, rgba(67, 100, 72, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(67, 100, 72, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 50% 10%, rgba(67, 100, 72, 0.04) 0%, transparent 50%);
-            box-shadow: inset 0 0 25px rgba(210, 205, 195, 0.3);
+                radial-gradient(circle at 90% 90%, rgba(67, 100, 72, 0.08) 0%, transparent 40%);
+            box-shadow: inset 0 0 25px rgba(210, 205, 195, 0.25);
         }
 
         .envelope-back {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: #EDE8DF;
             border-radius: 6px;
             box-shadow: 0 18px 40px -10px rgba(0, 0, 0, 0.12);
         }
@@ -124,11 +134,11 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 54px;
-            height: 54px;
-            background: radial-gradient(circle at 35% 35%, #802A2A, #541919 75%);
+            width: 56px;
+            height: 56px;
+            background: radial-gradient(circle at 35% 35%, #7D2626, #4A1515 80%);
             border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.35), inset 0 2px 3px rgba(255,255,255,0.25);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -151,7 +161,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0.8rem 0.8rem 0.8rem;
+            padding: 1.25rem 1rem 1rem 1rem;
             text-align: center;
             border: 1px solid rgba(190, 180, 165, 0.35);
             overflow: hidden;
@@ -182,10 +192,9 @@
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), width 0.8s ease !important;
         }
 
-        /* Ökad höjd för att visa hela huset och trapporna */
         .image-crop-container {
             width: 100%;
-            height: 225px;
+            height: 195px;
             overflow: hidden;
             position: relative;
             border-radius: 2px;
@@ -198,14 +207,6 @@
             display: block;
             object-fit: cover;
             object-position: top center;
-        }
-
-        .gold-accent {
-            color: #C19A5B;
-        }
-
-        .green-header {
-            color: #344E37;
         }
 
         @keyframes pulse-subtle {
@@ -229,78 +230,83 @@
         
         <div id="envelopeWrapper" class="envelope-wrapper" onclick="openEnvelope()">
             
-            <div class="envelope-back"></div>
+            <div class="envelope-back embossed-paper"></div>
 
             <div id="saveTheDateCard" class="card card-texture relative select-none">
                 
-                <!-- Övre textrad -->
                 <div class="pt-0.5 pb-0.5">
-                    <p class="sans-subtle text-[9px] sm:text-[10px] green-header uppercase tracking-[0.35em] font-light">
-                        BRÖLLOPSINBJUDAN
+                    <p class="font-serif italic text-xs sm:text-sm text-emerald-900/80">
+                        Save the date
                     </p>
                 </div>
 
-                <!-- Huset med väl anpassad höjd -->
-                <div class="image-crop-container">
+                <!-- Huset -->
+                <div class="image-crop-container my-1">
                     <img src="card.jpg" alt="Asa Herrgård">
                 </div>
 
-                <!-- Namn & Typografi -->
+                <!-- Namn i klassisk skripttypografi -->
                 <div class="my-auto py-0.5 flex flex-col items-center w-full z-10">
-                    
-                    <h2 class="font-serif text-2xl sm:text-3xl text-emerald-950 tracking-wider uppercase font-light leading-none">
-                        IDA
-                    </h2>
-                    
-                    <div class="font-serif italic gold-accent text-xl sm:text-2xl my-0.5 font-light">
-                        &amp;
-                    </div>
-
-                    <h2 class="font-serif text-2xl sm:text-3xl text-emerald-950 tracking-wider uppercase font-light leading-none mb-1.5">
-                        FRITJOF
+                    <h2 class="font-script text-4xl sm:text-5xl text-emerald-950 leading-tight">
+                        Ida <span class="text-3xl sm:text-4xl">&amp;</span> Fritjof
                     </h2>
 
-                    <p class="sans-subtle text-[8px] sm:text-[9px] green-header uppercase tracking-[0.3em] mb-0.5">
-                        SAVE THE DATE
+                    <p class="font-serif text-sm sm:text-base text-emerald-950 mt-1 font-normal">
+                        Lördag 4 september 2027
                     </p>
 
-                    <p class="font-serif gold-accent text-lg sm:text-xl tracking-[0.2em] font-normal">
-                        04 . 09 . 2027
+                    <p class="sans-subtle text-[9px] sm:text-[10px] text-emerald-900/70 uppercase tracking-[0.2em] mt-0.5">
+                        04 . 09 . 2027 &nbsp;•&nbsp; ASA HERRGÅRD
                     </p>
                 </div>
 
-                <!-- Inramad informationsbox längst ned -->
+                <!-- Live-nedräknare -->
+                <div class="w-full px-4 my-1.5 z-10">
+                    <div class="w-12 h-[1px] bg-emerald-900/20 mx-auto mb-2"></div>
+                    <div class="grid grid-cols-3 gap-2 text-center max-w-[200px] mx-auto">
+                        <div>
+                            <span id="days" class="font-serif text-lg sm:text-xl font-medium text-emerald-950">---</span>
+                            <p class="sans-subtle text-[8px] text-emerald-800/70 uppercase tracking-widest">dagar</p>
+                        </div>
+                        <div>
+                            <span id="hours" class="font-serif text-lg sm:text-xl font-medium text-emerald-950">--</span>
+                            <p class="sans-subtle text-[8px] text-emerald-800/70 uppercase tracking-widest">timmar</p>
+                        </div>
+                        <div>
+                            <span id="minutes" class="font-serif text-lg sm:text-xl font-medium text-emerald-950">--</span>
+                            <p class="sans-subtle text-[8px] text-emerald-800/70 uppercase tracking-widest">minuter</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meddelande och Kalender-knapp -->
                 <div class="w-full px-4 mb-1 z-10">
-                    <div class="border border-[#C19A5B]/40 py-1.5 px-2 rounded-[1px] bg-white/40 backdrop-blur-[1px]">
-                        <p class="sans-subtle text-[8px] sm:text-[9px] text-emerald-950 uppercase tracking-[0.2em]">
-                            ASA HERRGÅRD
-                        </p>
-                        <p class="font-serif italic text-[10px] sm:text-[11px] text-emerald-900/80 mt-0.5">
-                            Lammhult
-                        </p>
-                    </div>
+                    <p class="font-serif italic text-xs text-emerald-900/80 mb-2">
+                        Vi gifter oss på Asa Herrgård. Spara lördagen åt oss!
+                    </p>
+
+                    <button onclick="addToCalendar(event)" class="inline-flex items-center gap-1.5 px-3 py-1 border border-emerald-900/30 rounded-full sans-subtle text-[9px] text-emerald-950 uppercase tracking-[0.15em] hover:bg-emerald-950 hover:text-white transition-colors duration-300">
+                        <span>Lägg till i kalendern</span>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </button>
                 </div>
 
-                <!-- Gröna Akvarellväxter & Blad i Vänster Hörn -->
-                <svg class="absolute bottom-0 left-0 w-24 sm:w-28 h-auto pointer-events-none opacity-85" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Gröna botaniska akvarellblad (Vänster) -->
+                <svg class="absolute bottom-0 left-0 w-24 sm:w-28 h-auto pointer-events-none opacity-80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M 0 100 Q 30 70 15 35 Q 25 55 45 40" stroke="#3D5A45" stroke-width="1.2" fill="none" opacity="0.6"/>
-                    <path d="M 0 100 Q 40 85 60 70" stroke="#4F6D57" stroke-width="1" fill="none" opacity="0.6"/>
                     <path d="M 10 75 C 5 60 20 55 25 70 C 20 78 12 80 10 75 Z" fill="#4B6953" opacity="0.75"/>
                     <path d="M 22 55 C 18 42 32 40 34 52 C 30 60 24 60 22 55 Z" fill="#3D5A45" opacity="0.8"/>
                     <path d="M 38 42 C 35 30 48 30 48 40 C 44 46 40 46 38 42 Z" fill="#608069" opacity="0.7"/>
-                    <path d="M 40 75 C 32 65 46 58 50 70 C 46 78 42 78 40 75 Z" fill="#52735B" opacity="0.75"/>
-                    <path d="M 58 68 C 50 60 62 52 66 62 C 62 70 59 70 58 68 Z" fill="#3B5442" opacity="0.8"/>
                 </svg>
 
-                <!-- Gröna Akvarellväxter & Blad i Höger Hörn -->
-                <svg class="absolute bottom-0 right-0 w-24 sm:w-28 h-auto pointer-events-none opacity-85 transform scale-x-[-1]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Gröna botaniska akvarellblad (Höger) -->
+                <svg class="absolute bottom-0 right-0 w-24 sm:w-28 h-auto pointer-events-none opacity-80 transform scale-x-[-1]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M 0 100 Q 30 70 15 35 Q 25 55 45 40" stroke="#3D5A45" stroke-width="1.2" fill="none" opacity="0.6"/>
-                    <path d="M 0 100 Q 40 85 60 70" stroke="#4F6D57" stroke-width="1" fill="none" opacity="0.6"/>
                     <path d="M 10 75 C 5 60 20 55 25 70 C 20 78 12 80 10 75 Z" fill="#4B6953" opacity="0.75"/>
                     <path d="M 22 55 C 18 42 32 40 34 52 C 30 60 24 60 22 55 Z" fill="#3D5A45" opacity="0.8"/>
                     <path d="M 38 42 C 35 30 48 30 48 40 C 44 46 40 46 38 42 Z" fill="#608069" opacity="0.7"/>
-                    <path d="M 40 75 C 32 65 46 58 50 70 C 46 78 42 78 40 75 Z" fill="#52735B" opacity="0.75"/>
-                    <path d="M 58 68 C 50 60 62 52 66 62 C 62 70 59 70 58 68 Z" fill="#3B5442" opacity="0.8"/>
                 </svg>
 
             </div>
@@ -337,6 +343,30 @@
 
     <script>
         let isOpen = false;
+        const targetDate = new Date('2027-09-04T15:00:00');
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('days').innerText = '0';
+                document.getElementById('hours').innerText = '0';
+                document.getElementById('minutes').innerText = '0';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+
+            document.getElementById('days').innerText = days;
+            document.getElementById('hours').innerText = hours;
+            document.getElementById('minutes').innerText = minutes;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
         function openEnvelope() {
             if (isOpen) return;
@@ -385,6 +415,31 @@
                 wrapper.classList.remove('open');
                 prompt.style.opacity = '1';
             }, 900);
+        }
+
+        function addToCalendar(e) {
+            e.stopPropagation();
+            const icsData = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Ida & Fritjof Wedding//EN',
+                'BEGIN:VEVENT',
+                'SUMMARY:Bröllop — Ida & Fritjof',
+                'DESCRIPTION:Save the date för Ida & Fritjofs bröllop på Asa Herrgård!',
+                'LOCATION:Asa Herrgård, Lammhult',
+                'DTSTART:20270904T130000Z',
+                'DTEND:20270905T010000Z',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\n');
+
+            const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', 'Ida_och_Fritjof_Brollop.ics');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     </script>
 </body>
