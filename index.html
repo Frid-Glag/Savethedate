@@ -27,7 +27,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            touch-action: manipulation;
+            touch-action: none;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -49,60 +49,20 @@
             overflow: hidden;
         }
 
-        /* Helt sömlöst kuvert via envelope.jpg utan trasig CSS-geometri */
-        .envelope-overlay {
+        /* Skrapduken som ligger ovanpå inbjudan */
+        #scratchCanvas {
             position: absolute;
             inset: 0;
+            width: 100%;
+            height: 100%;
             z-index: 10;
-            background-image: url('envelope.jpg');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             cursor: pointer;
-            transition: opacity 2.5s cubic-bezier(0.22, 1, 0.36, 1), transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: opacity 1.2s ease, visibility 1.2s;
         }
 
-        /* Skogsgrönt fotorealistiskt vaxsigill i mitten */
-        .wax-seal-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-2deg);
-            width: 74px;
-            height: 74px;
-            background: radial-gradient(circle at 32% 28%, #526B48 0%, #3D5335 55%, #293823 90%);
-            border-radius: 46% 54% 58% 42% / 52% 46% 54% 48%;
-            box-shadow: 
-                0 12px 28px rgba(0,0,0,0.28),
-                0 4px 8px rgba(0,0,0,0.18),
-                inset 0 2px 4px rgba(255,255,255,0.45),
-                inset 0 -4px 8px rgba(15,25,12,0.65);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-
-        .wax-seal-button:hover {
-            transform: translate(-50%, -50%) rotate(-2deg) scale(1.05);
-            box-shadow: 
-                0 16px 32px rgba(0,0,0,0.32),
-                0 6px 12px rgba(0,0,0,0.2),
-                inset 0 2px 4px rgba(255,255,255,0.5),
-                inset 0 -4px 8px rgba(15,25,12,0.65);
-        }
-
-        .wax-seal-button::after {
-            content: '';
-            position: absolute;
-            inset: 5px;
-            border-radius: 42% 58% 52% 48% / 48% 52% 48% 52%;
-            border: 1px solid rgba(135, 165, 125, 0.35);
-            box-shadow: inset 0 2px 3px rgba(0,0,0,0.25);
+        #scratchCanvas.revealed {
+            opacity: 0;
+            visibility: hidden;
             pointer-events: none;
         }
 
@@ -111,16 +71,18 @@
             bottom: 6dvh;
             left: 50%;
             transform: translateX(-50%);
+            z-index: 12;
             animation: pulse-subtle 2.5s infinite ease-in-out;
             pointer-events: none;
+            transition: opacity 0.5s ease;
         }
 
         @keyframes pulse-subtle {
-            0%, 100% { opacity: 0.5; transform: translate(-50%, 0); }
+            0%, 100% { opacity: 0.6; transform: translate(-50%, 0); }
             50% { opacity: 1; transform: translate(-50%, -4px); }
         }
 
-        /* Inbjudningskort enligt din skandinaviska referensbild */
+        /* Inbjudningskortet under skrapskiktet */
         .card {
             position: absolute;
             width: 90%;
@@ -138,22 +100,7 @@
             text-align: center;
             border: 1px solid rgba(210, 200, 185, 0.45);
             z-index: 2;
-            transform: translateY(35px) scale(0.95);
-            opacity: 0;
-            transition: transform 2.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, opacity 2s ease 0.3s;
-        }
-
-        /* Trigger när kuvertet öppnas */
-        .scene.open .envelope-overlay {
-            opacity: 0;
-            transform: scale(1.03);
-            pointer-events: none;
-        }
-
-        .scene.open .card {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-            z-index: 20;
+            touch-action: auto;
         }
 
         .image-crop-container {
@@ -179,22 +126,16 @@
 
     <main id="sceneWrapper" class="scene">
         
-        <!-- Sömlös kuvertframsida -->
-        <div class="envelope-overlay" onclick="openEnvelope()">
-            <div class="wax-seal-button">
-                <span class="font-serif italic text-emerald-100/95 text-2xl font-light select-none tracking-wider" style="filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));">
-                    I&amp;F
-                </span>
-            </div>
+        <!-- Canvas där kuvertet/sigillet ritas upp och skrapas bort -->
+        <canvas id="scratchCanvas"></canvas>
 
-            <div class="animate-prompt">
-                <span class="sans-subtle text-[10px] text-stone-600 tracking-[0.25em] uppercase border-b border-stone-400/50 pb-0.5">
-                    TAP THE SEAL TO OPEN
-                </span>
-            </div>
+        <div id="tapPrompt" class="animate-prompt">
+            <span class="sans-subtle text-[10px] text-stone-600 tracking-[0.25em] uppercase border-b border-stone-400/50 pb-0.5">
+                SKRAPA FÖR ATT ÖPPNA
+            </span>
         </div>
 
-        <!-- Inbjudningskort -->
+        <!-- Inbjudningskortet under -->
         <div id="saveTheDateCard" class="card select-none">
             
             <div class="pt-1">
@@ -255,9 +196,98 @@
     </main>
 
     <script>
-        let isOpen = false;
-        const targetDate = new Date('2027-09-04T15:00:00');
+        const canvas = document.getElementById('scratchCanvas');
+        const ctx = canvas.getContext('2d');
+        const prompt = document.getElementById('tapPrompt');
+        let isDrawing = false;
+        let scratchedPixels = 0;
+        let isRevealed = false;
 
+        const envImg = new Image();
+        envImg.src = 'envelope.jpg';
+
+        function initCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            if (envImg.complete) {
+                drawEnvelope();
+            } else {
+                envImg.onload = drawEnvelope;
+            }
+        }
+
+        function drawEnvelope() {
+            ctx.drawImage(envImg, 0, 0, canvas.width, canvas.height);
+            drawWaxSeal();
+        }
+
+        function drawWaxSeal() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 38;
+
+            ctx.save();
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+            ctx.shadowBlur = 12;
+            ctx.shadowOffsetY = 6;
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#3D5335';
+            ctx.fill();
+            ctx.restore();
+
+            ctx.font = 'italic 24px "Cormorant Garamond", serif';
+            ctx.fillStyle = '#E2EBDC';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('I&F', centerX, centerY);
+        }
+
+        function scratch(e) {
+            if (isRevealed) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 35, 0, Math.PI * 2);
+            ctx.fill();
+
+            checkScratchProgress();
+        }
+
+        function checkScratchProgress() {
+            if (isRevealed) return;
+
+            scratchedPixels++;
+            if (scratchedPixels > 25) {
+                isRevealed = true;
+                canvas.classList.add('revealed');
+                if (prompt) prompt.style.opacity = '0';
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+        canvas.addEventListener('mousemove', (e) => { if (isDrawing) scratch(e); });
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+
+        canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+        canvas.addEventListener('touchmove', (e) => { if (isDrawing) scratch(e); });
+        canvas.addEventListener('touchend', () => isDrawing = false);
+
+        window.addEventListener('resize', initCanvas);
+        window.addEventListener('load', initCanvas);
+
+        // Live Nedräkning
+        const targetDate = new Date('2027-09-04T15:00:00');
         function updateCountdown() {
             const now = new Date();
             const diff = targetDate - now;
@@ -269,25 +299,12 @@
                 return;
             }
 
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / 1000 / 60) % 60);
-
-            document.getElementById('days').innerText = days;
-            document.getElementById('hours').innerText = hours;
-            document.getElementById('minutes').innerText = minutes;
+            document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            document.getElementById('minutes').innerText = Math.floor((diff / 1000 / 60) % 60);
         }
-
         setInterval(updateCountdown, 1000);
         updateCountdown();
-
-        function openEnvelope() {
-            if (isOpen) return;
-            isOpen = true;
-
-            const scene = document.getElementById('sceneWrapper');
-            scene.classList.add('open');
-        }
 
         function addToCalendar(e) {
             e.stopPropagation();
