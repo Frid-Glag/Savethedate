@@ -46,6 +46,7 @@
             position: relative;
         }
 
+        /* Helskärmskuvert utan svarta ramar */
         .envelope-container {
             position: relative;
             width: 100vw;
@@ -60,105 +61,18 @@
             align-items: center;
         }
 
-        /* Krämfärgad finpapperstextur för kuvertet */
-        .embossed-paper {
+        /* Använder envelope.jpg som kuvertbakgrund */
+        .real-envelope-bg {
             position: absolute;
             inset: 0;
-            background-color: #F8F6F0;
-            background-image: 
-                radial-gradient(#dcd5c7 0.8px, transparent 0.8px), 
-                radial-gradient(#dcd5c7 0.8px, #F8F6F0 0.8px);
-            background-size: 26px 26px;
-            background-position: 0 0, 13px 13px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+            background-image: url('envelope.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: 5;
+            transition: opacity 2.8s cubic-bezier(0.22, 1, 0.36, 1), transform 2.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .envelope-pocket-left {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 55%;
-            height: 70%;
-            background: linear-gradient(135deg, #EBE5D8 0%, #F3EDDF 100%);
-            clip-path: polygon(0 0, 0 100%, 100% 100%);
-            z-index: 3;
-            pointer-events: none;
-        }
-
-        .envelope-pocket-right {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 55%;
-            height: 70%;
-            background: linear-gradient(-135deg, #EBE5D8 0%, #F3EDDF 100%);
-            clip-path: polygon(100% 0, 0 100%, 100% 100%);
-            z-index: 3;
-            pointer-events: none;
-        }
-
-        .envelope-pocket-bottom {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 55%;
-            background: linear-gradient(0deg, #E4DDCF 0%, #EFE9DC 100%);
-            clip-path: polygon(0 100%, 100% 100%, 50% 15%);
-            z-index: 3;
-            pointer-events: none;
-        }
-
-        .envelope-flap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 52%;
-            background-color: #F4EFE6;
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            transform-origin: top center;
-            transform-style: preserve-3d;
-            transition: transform 2.2s cubic-bezier(0.22, 1, 0.36, 1);
-            z-index: 6;
-            border-top: 1px solid rgba(255, 255, 255, 0.9);
-            filter: drop-shadow(0 6px 8px rgba(0,0,0,0.08));
-        }
-
-        /* Grönt fotorealistiskt vaxsigill med I&F */
-        .wax-seal {
-            position: absolute;
-            top: 48%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-2deg);
-            width: 72px;
-            height: 72px;
-            background: radial-gradient(circle at 32% 28%, #526B48 0%, #3D5335 55%, #293823 90%);
-            border-radius: 46% 54% 58% 42% / 52% 46% 54% 48%;
-            box-shadow: 
-                0 10px 24px rgba(0,0,0,0.25),
-                0 3px 6px rgba(0,0,0,0.15),
-                inset 0 2px 4px rgba(255,255,255,0.4),
-                inset 0 -4px 8px rgba(15,25,12,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 1s ease, opacity 1s ease;
-            z-index: 10;
-        }
-
-        .wax-seal::after {
-            content: '';
-            position: absolute;
-            inset: 5px;
-            border-radius: 42% 58% 52% 48% / 48% 52% 48% 52%;
-            border: 1px solid rgba(135, 165, 125, 0.3);
-            box-shadow: inset 0 2px 3px rgba(0,0,0,0.25);
-            pointer-events: none;
-        }
-
-        /* Inbjudningskortet med den nya minimalistiska skandinaviska designen */
+        /* Skandinaviskt minimalistiskt kort */
         .card {
             position: absolute;
             width: 88%;
@@ -177,21 +91,17 @@
             border: 1px solid rgba(210, 200, 185, 0.4);
             z-index: 2;
             bottom: 5%;
-            transform: translateY(35%) scale(0.92);
+            transform: translateY(30%) scale(0.94);
             opacity: 0;
-            transition: transform 3s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, opacity 2s ease 0.3s, z-index 0s;
+            transition: transform 3.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s, opacity 2.4s ease 0.4s, z-index 0s;
             pointer-events: none;
         }
 
-        .open .envelope-flap {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-
-        .open .wax-seal {
+        /* Öppningsanimation vid klick */
+        .open .real-envelope-bg {
             opacity: 0;
+            transform: translateY(-6%) scale(1.02);
             pointer-events: none;
-            transform: translate(-50%, -50%) scale(0.5);
         }
 
         .open .card {
@@ -199,7 +109,7 @@
             opacity: 1;
             z-index: 50;
             pointer-events: auto;
-            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.3);
         }
 
         .image-crop-container {
@@ -220,31 +130,44 @@
         }
 
         @keyframes pulse-subtle {
-            0%, 100% { opacity: 0.5; transform: translateY(0); }
-            50% { opacity: 1; transform: translateY(-3px); }
+            0%, 100% { opacity: 0.5; transform: translate(-50%, 0); }
+            50% { opacity: 1; transform: translate(-50%, -4px); }
         }
 
         .animate-prompt {
+            position: absolute;
+            bottom: 6dvh;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
             animation: pulse-subtle 2.5s infinite ease-in-out;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
     <main class="scene">
-        <div id="envelopeWrapper" class="envelope-container embossed-paper" onclick="openEnvelope()">
+        <div id="envelopeWrapper" class="envelope-container" onclick="openEnvelope()">
             
-            <!-- Inbjudningskortet med ny design exakt som bilden -->
+            <!-- Bakgrund med din envelope.jpg -->
+            <div class="real-envelope-bg">
+                <div id="tapPrompt" class="animate-prompt">
+                    <span class="sans-subtle text-[10px] text-stone-600 tracking-[0.25em] uppercase border-b border-stone-400/50 pb-0.5">
+                        TAP THE SEAL TO OPEN
+                    </span>
+                </div>
+            </div>
+
+            <!-- Inbjudningskortet -->
             <div id="saveTheDateCard" class="card select-none">
                 
-                <!-- Övre texten -->
                 <div class="pt-1">
                     <p class="sans-subtle text-[11px] sm:text-[12px] text-stone-600 uppercase tracking-[0.3em]">
                         SAVE THE DATE
                     </p>
                 </div>
 
-                <!-- Namn i stram serif-typografi -->
                 <div class="my-1 flex flex-col items-center justify-center">
                     <h1 class="font-serif text-3xl sm:text-4xl text-stone-800 tracking-[0.2em] uppercase font-light leading-tight">
                         IDA
@@ -255,12 +178,10 @@
                     </h1>
                 </div>
 
-                <!-- Akvarellmålningen på Asa Herrgård -->
                 <div class="image-crop-container">
                     <img src="card.jpg" alt="Asa Herrgård">
                 </div>
 
-                <!-- Datum & Plats -->
                 <div class="mb-2">
                     <h3 class="font-serif text-lg sm:text-xl text-stone-800 tracking-[0.2em] uppercase font-normal">
                         4:E SEPTEMBER 2027
@@ -270,7 +191,6 @@
                     </p>
                 </div>
 
-                <!-- Live-nedräkning och Kalender-knapp -->
                 <div class="w-full pt-2 border-t border-stone-300/60 z-10">
                     <div class="grid grid-cols-3 gap-2 text-center max-w-[190px] mx-auto mb-2">
                         <div>
@@ -295,27 +215,6 @@
                     </button>
                 </div>
 
-            </div>
-
-            <!-- Kuvertfickor -->
-            <div class="envelope-pocket-left"></div>
-            <div class="envelope-pocket-right"></div>
-            <div class="envelope-pocket-bottom flex flex-col justify-end items-center pb-8 text-center pointer-events-none z-40">
-                <div id="tapPrompt" class="animate-prompt pointer-events-auto cursor-pointer" onclick="openEnvelope()">
-                    <span class="sans-subtle text-[10px] text-stone-600 tracking-[0.25em] uppercase hover:text-stone-900 pb-0.5">
-                        TAP THE SEAL TO OPEN
-                    </span>
-                </div>
-            </div>
-
-            <!-- Kuvertflik -->
-            <div class="envelope-flap"></div>
-
-            <!-- Grönt vaxsigill med I&F -->
-            <div id="waxSeal" class="wax-seal" onclick="openEnvelope()">
-                <span class="font-serif italic text-emerald-100/90 text-2xl font-light select-none tracking-wider" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));">
-                    I&amp;F
-                </span>
             </div>
 
         </div>
