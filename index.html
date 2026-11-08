@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -17,212 +17,312 @@
 
         body {
             font-family: 'Cormorant Garamond', serif;
-            background-color: #EAE6DF;
-            color: #1C3325;
+            background-color: #E6E2D8;
+            color: #2C352E;
             width: 100vw;
-            min-height: 100vh;
-            min-height: 100dvh;
-            overflow-x: hidden;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
 
         .sans-subtle {
             font-family: 'Montserrat', sans-serif;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.25em;
         }
 
-        .font-script {
-            font-family: 'Great Vibes', cursive;
-        }
-
-        /* Helskärms-wrapper utan svarta kanter */
-        .page-wrapper {
-            position: relative;
-            width: 100vw;
-            min-height: 100vh;
-            min-height: 100dvh;
+        .scene {
+            perspective: 1600px;
+            width: 100%;
+            height: 100%;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            justify-content: flex-start;
+            position: relative;
         }
 
-        /* Kuvert som täcker hela skärmen initialt */
-        .envelope-screen {
-            position: fixed;
-            inset: 0;
+        .envelope-container {
+            position: relative;
             width: 100vw;
             height: 100vh;
             height: 100dvh;
-            z-index: 100;
-            cursor: pointer;
-            perspective: 1600px;
-            background-image: url('envelope.jpg');
-            background-size: cover;
-            background-position: center;
-            transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.8s;
-        }
-
-        /* Animation vid klick på sigillet / kuvertet */
-        .envelope-screen.open {
-            opacity: 0;
-            transform: translateY(-8%);
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        /* Texten nederst på kuvertet */
-        .tap-prompt {
-            position: absolute;
-            bottom: 8dvh;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: pulse-subtle 2.5s infinite ease-in-out;
-            pointer-events: none;
-        }
-
-        @keyframes pulse-subtle {
-            0%, 100% { opacity: 0.5; transform: translate(-50%, 0); }
-            50% { opacity: 1; transform: translate(-50%, -4px); }
-        }
-
-        /* Inbjudningskortet som glider upp nerifrån när kuvertet öppnas */
-        .main-card {
-            width: 100vw;
             max-width: 480px;
-            min-height: 100vh;
-            min-height: 100dvh;
-            background: #FDFCF9;
+            max-height: 880px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Krämfärgad finpapperstextur för kuvertet */
+        .embossed-paper {
+            position: absolute;
+            inset: 0;
+            background-color: #F8F6F0;
+            background-image: 
+                radial-gradient(#dcd5c7 0.8px, transparent 0.8px), 
+                radial-gradient(#dcd5c7 0.8px, #F8F6F0 0.8px);
+            background-size: 26px 26px;
+            background-position: 0 0, 13px 13px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+        }
+
+        .envelope-pocket-left {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 55%;
+            height: 70%;
+            background: linear-gradient(135deg, #EBE5D8 0%, #F3EDDF 100%);
+            clip-path: polygon(0 0, 0 100%, 100% 100%);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .envelope-pocket-right {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 55%;
+            height: 70%;
+            background: linear-gradient(-135deg, #EBE5D8 0%, #F3EDDF 100%);
+            clip-path: polygon(100% 0, 0 100%, 100% 100%);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .envelope-pocket-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 55%;
+            background: linear-gradient(0deg, #E4DDCF 0%, #EFE9DC 100%);
+            clip-path: polygon(0 100%, 100% 100%, 50% 15%);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 52%;
+            background-color: #F4EFE6;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top center;
+            transform-style: preserve-3d;
+            transition: transform 2.2s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 6;
+            border-top: 1px solid rgba(255, 255, 255, 0.9);
+            filter: drop-shadow(0 6px 8px rgba(0,0,0,0.08));
+        }
+
+        /* Grönt fotorealistiskt vaxsigill med I&F */
+        .wax-seal {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-2deg);
+            width: 72px;
+            height: 72px;
+            background: radial-gradient(circle at 32% 28%, #526B48 0%, #3D5335 55%, #293823 90%);
+            border-radius: 46% 54% 58% 42% / 52% 46% 54% 48%;
+            box-shadow: 
+                0 10px 24px rgba(0,0,0,0.25),
+                0 3px 6px rgba(0,0,0,0.15),
+                inset 0 2px 4px rgba(255,255,255,0.4),
+                inset 0 -4px 8px rgba(15,25,12,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 1s ease, opacity 1s ease;
+            z-index: 10;
+        }
+
+        .wax-seal::after {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border-radius: 42% 58% 52% 48% / 48% 52% 48% 52%;
+            border: 1px solid rgba(135, 165, 125, 0.3);
+            box-shadow: inset 0 2px 3px rgba(0,0,0,0.25);
+            pointer-events: none;
+        }
+
+        /* Inbjudningskortet med den nya minimalistiska skandinaviska designen */
+        .card {
+            position: absolute;
+            width: 88%;
+            max-width: 390px;
+            height: 86%;
+            max-height: 650px;
+            background: #FAF8F5;
+            border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 2.5rem 1.5rem 2rem 1.5rem;
+            padding: 2rem 1.2rem 1.2rem 1.2rem;
             text-align: center;
-            position: relative;
-            transform: translateY(40px);
+            border: 1px solid rgba(210, 200, 185, 0.4);
+            z-index: 2;
+            bottom: 5%;
+            transform: translateY(35%) scale(0.92);
             opacity: 0;
-            transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s, opacity 1.6s ease 0.4s;
-            box-shadow: 0 0 50px rgba(0,0,0,0.06);
+            transition: transform 3s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, opacity 2s ease 0.3s, z-index 0s;
+            pointer-events: none;
         }
 
-        .envelope-screen.open + .main-card {
-            transform: translateY(0);
+        .open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .open .wax-seal {
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(0.5);
+        }
+
+        .open .card {
+            transform: translateY(0%) scale(1);
             opacity: 1;
+            z-index: 50;
+            pointer-events: auto;
+            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.35);
         }
 
-        /* Mjuktonad kant på herrgårdsbilden */
         .image-crop-container {
             width: 100%;
-            height: 220px;
+            height: 230px;
             overflow: hidden;
             position: relative;
-            border-radius: 6px;
             flex-shrink: 0;
-            -webkit-mask-image: radial-gradient(ellipse 92% 92% at 50% 50%, #000 68%, transparent 100%);
-            mask-image: radial-gradient(ellipse 92% 92% at 50% 50%, #000 68%, transparent 100%);
+            margin: 0.5rem 0;
         }
 
         .image-crop-container img {
             width: 100%;
-            height: auto;
+            height: 100%;
             display: block;
             object-fit: cover;
-            object-position: top center;
+            object-position: center;
+        }
+
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 0.5; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-3px); }
+        }
+
+        .animate-prompt {
+            animation: pulse-subtle 2.5s infinite ease-in-out;
         }
     </style>
 </head>
 <body>
 
-    <div class="page-wrapper">
-        
-        <!-- Helskärmskuvert utan svart ram -->
-        <div id="envelopeScreen" class="envelope-screen" onclick="openEnvelope()">
-            <div class="tap-prompt">
-                <span class="sans-subtle text-[10px] text-stone-600 tracking-[0.25em] uppercase border-b border-stone-400/40 pb-0.5">
-                    TAP THE SEAL TO OPEN
-                </span>
-            </div>
-        </div>
-
-        <!-- Inbjudningskortet som tonas in och stiger upp -->
-        <main id="saveTheDateCard" class="main-card select-none">
+    <main class="scene">
+        <div id="envelopeWrapper" class="envelope-container embossed-paper" onclick="openEnvelope()">
             
-            <div class="pt-2">
-                <p class="font-serif italic text-sm text-emerald-900/80">
-                    Save the date
-                </p>
+            <!-- Inbjudningskortet med ny design exakt som bilden -->
+            <div id="saveTheDateCard" class="card select-none">
+                
+                <!-- Övre texten -->
+                <div class="pt-1">
+                    <p class="sans-subtle text-[11px] sm:text-[12px] text-stone-600 uppercase tracking-[0.3em]">
+                        SAVE THE DATE
+                    </p>
+                </div>
+
+                <!-- Namn i stram serif-typografi -->
+                <div class="my-1 flex flex-col items-center justify-center">
+                    <h1 class="font-serif text-3xl sm:text-4xl text-stone-800 tracking-[0.2em] uppercase font-light leading-tight">
+                        IDA
+                    </h1>
+                    <span class="font-serif italic text-xl text-stone-600 my-0.5">&amp;</span>
+                    <h1 class="font-serif text-3xl sm:text-4xl text-stone-800 tracking-[0.2em] uppercase font-light leading-tight">
+                        FRITJOF
+                    </h1>
+                </div>
+
+                <!-- Akvarellmålningen på Asa Herrgård -->
+                <div class="image-crop-container">
+                    <img src="card.jpg" alt="Asa Herrgård">
+                </div>
+
+                <!-- Datum & Plats -->
+                <div class="mb-2">
+                    <h3 class="font-serif text-lg sm:text-xl text-stone-800 tracking-[0.2em] uppercase font-normal">
+                        4:E SEPTEMBER 2027
+                    </h3>
+                    <p class="sans-subtle text-[10px] text-stone-500 uppercase tracking-[0.25em] mt-1">
+                        ASA HERRGÅRD
+                    </p>
+                </div>
+
+                <!-- Live-nedräkning och Kalender-knapp -->
+                <div class="w-full pt-2 border-t border-stone-300/60 z-10">
+                    <div class="grid grid-cols-3 gap-2 text-center max-w-[190px] mx-auto mb-2">
+                        <div>
+                            <span id="days" class="font-serif text-base font-medium text-stone-800">---</span>
+                            <p class="sans-subtle text-[7px] text-stone-500 uppercase tracking-widest">dagar</p>
+                        </div>
+                        <div>
+                            <span id="hours" class="font-serif text-base font-medium text-stone-800">--</span>
+                            <p class="sans-subtle text-[7px] text-stone-500 uppercase tracking-widest">timmar</p>
+                        </div>
+                        <div>
+                            <span id="minutes" class="font-serif text-base font-medium text-stone-800">--</span>
+                            <p class="sans-subtle text-[7px] text-stone-500 uppercase tracking-widest">minuter</p>
+                        </div>
+                    </div>
+
+                    <button onclick="addToCalendar(event)" class="inline-flex items-center gap-1.5 px-3 py-1 border border-stone-400 rounded-full sans-subtle text-[8px] text-stone-700 uppercase tracking-[0.15em] hover:bg-stone-800 hover:text-white transition-colors duration-300">
+                        <span>SPARA I KALENDERN</span>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </button>
+                </div>
+
             </div>
 
-            <!-- Herrgårdsbild med mjuk tonad övergång -->
-            <div class="image-crop-container my-3">
-                <img src="card.jpg" alt="Asa Herrgård">
-            </div>
-
-            <div class="my-auto py-2 flex flex-col items-center w-full z-10">
-                <h2 class="font-script text-5xl sm:text-6xl text-emerald-950 leading-tight">
-                    Ida <span class="text-4xl sm:text-5xl">&amp;</span> Fritjof
-                </h2>
-
-                <p class="font-serif text-base sm:text-lg text-emerald-950 mt-2 font-normal">
-                    Lördag 4 september 2027
-                </p>
-
-                <p class="sans-subtle text-[10px] text-emerald-900/70 uppercase tracking-[0.2em] mt-1">
-                    04 . 09 . 2027 &nbsp;•&nbsp; ASA HERRGÅRD
-                </p>
-            </div>
-
-            <div class="w-full px-4 my-2 z-10">
-                <div class="w-16 h-[1px] bg-emerald-900/20 mx-auto mb-3"></div>
-                <div class="grid grid-cols-3 gap-3 text-center max-w-[220px] mx-auto">
-                    <div>
-                        <span id="days" class="font-serif text-xl sm:text-2xl font-medium text-emerald-950">---</span>
-                        <p class="sans-subtle text-[8px] text-emerald-800/70 uppercase tracking-widest mt-0.5">dagar</p>
-                    </div>
-                    <div>
-                        <span id="hours" class="font-serif text-xl sm:text-2xl font-medium text-emerald-950">--</span>
-                        <p class="sans-subtle text-[8px] text-emerald-800/70 uppercase tracking-widest mt-0.5">timmar</p>
-                    </div>
-                    <div>
-                        <span id="minutes" class="font-serif text-xl sm:text-2xl font-medium text-emerald-950">--</span>
-                        <p class="sans-subtle text-[8px] text-emerald-800/70 uppercase tracking-widest mt-0.5">minuter</p>
-                    </div>
+            <!-- Kuvertfickor -->
+            <div class="envelope-pocket-left"></div>
+            <div class="envelope-pocket-right"></div>
+            <div class="envelope-pocket-bottom flex flex-col justify-end items-center pb-8 text-center pointer-events-none z-40">
+                <div id="tapPrompt" class="animate-prompt pointer-events-auto cursor-pointer" onclick="openEnvelope()">
+                    <span class="sans-subtle text-[10px] text-stone-600 tracking-[0.25em] uppercase hover:text-stone-900 pb-0.5">
+                        TAP THE SEAL TO OPEN
+                    </span>
                 </div>
             </div>
 
-            <div class="w-full px-4 mb-3 z-10">
-                <p class="font-serif italic text-xs sm:text-sm text-emerald-900/80 mb-3">
-                    Vi gifter oss på Asa Herrgård. Spara lördagen åt oss!
-                </p>
+            <!-- Kuvertflik -->
+            <div class="envelope-flap"></div>
 
-                <button onclick="addToCalendar(event)" class="inline-flex items-center gap-2 px-4 py-1.5 border border-emerald-900/30 rounded-full sans-subtle text-[10px] text-emerald-950 uppercase tracking-[0.15em] hover:bg-emerald-950 hover:text-white transition-colors duration-300">
-                    <span>Lägg till i kalendern</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                </button>
+            <!-- Grönt vaxsigill med I&F -->
+            <div id="waxSeal" class="wax-seal" onclick="openEnvelope()">
+                <span class="font-serif italic text-emerald-100/90 text-2xl font-light select-none tracking-wider" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));">
+                    I&amp;F
+                </span>
             </div>
 
-            <!-- Akvarellblad i hörnen -->
-            <svg class="absolute bottom-0 left-0 w-24 sm:w-28 h-auto pointer-events-none opacity-80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 0 100 Q 30 70 15 35 Q 25 55 45 40" stroke="#3D5A45" stroke-width="1.2" fill="none" opacity="0.6"/>
-                <path d="M 10 75 C 5 60 20 55 25 70 C 20 78 12 80 10 75 Z" fill="#4B6953" opacity="0.75"/>
-                <path d="M 22 55 C 18 42 32 40 34 52 C 30 60 24 60 22 55 Z" fill="#3D5A45" opacity="0.8"/>
-            </svg>
-
-            <svg class="absolute bottom-0 right-0 w-24 sm:w-28 h-auto pointer-events-none opacity-80 transform scale-x-[-1]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 0 100 Q 30 70 15 35 Q 25 55 45 40" stroke="#3D5A45" stroke-width="1.2" fill="none" opacity="0.6"/>
-                <path d="M 10 75 C 5 60 20 55 25 70 C 20 78 12 80 10 75 Z" fill="#4B6953" opacity="0.75"/>
-                <path d="M 22 55 C 18 42 32 40 34 52 C 30 60 24 60 22 55 Z" fill="#3D5A45" opacity="0.8"/>
-            </svg>
-
-        </main>
-
-    </div>
+        </div>
+    </main>
 
     <script>
+        let isOpen = false;
         const targetDate = new Date('2027-09-04T15:00:00');
 
         function updateCountdown() {
@@ -249,8 +349,11 @@
         updateCountdown();
 
         function openEnvelope() {
-            const env = document.getElementById('envelopeScreen');
-            env.classList.add('open');
+            if (isOpen) return;
+            isOpen = true;
+
+            const wrapper = document.getElementById('envelopeWrapper');
+            wrapper.classList.add('open');
         }
 
         function addToCalendar(e) {
