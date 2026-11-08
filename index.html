@@ -46,7 +46,6 @@
             position: relative;
         }
 
-        /* Helskärmskuvert utan svarta ramar */
         .envelope-container {
             position: relative;
             width: 100vw;
@@ -61,18 +60,80 @@
             align-items: center;
         }
 
-        /* Använder envelope.jpg som kuvertbakgrund */
-        .real-envelope-bg {
+        /* Kuvertets bakgrund / struktur */
+        .envelope-back {
             position: absolute;
             inset: 0;
             background-image: url('envelope.jpg');
             background-size: cover;
             background-position: center;
-            z-index: 5;
-            transition: opacity 2.8s cubic-bezier(0.22, 1, 0.36, 1), transform 2.8s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 1;
         }
 
-        /* Skandinaviskt minimalistiskt kort */
+        /* 3D Toppklaff som viks uppåt */
+        .envelope-flap-3d {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-color: #F4EFE6;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top center;
+            transform-style: preserve-3d;
+            transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 6;
+            filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* Grönt fotorealistiskt vaxsigill */
+        .wax-seal {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-2deg);
+            width: 72px;
+            height: 72px;
+            background: radial-gradient(circle at 32% 28%, #526B48 0%, #3D5335 55%, #293823 90%);
+            border-radius: 46% 54% 58% 42% / 52% 46% 54% 48%;
+            box-shadow: 
+                0 10px 24px rgba(0,0,0,0.25),
+                0 3px 6px rgba(0,0,0,0.15),
+                inset 0 2px 4px rgba(255,255,255,0.4),
+                inset 0 -4px 8px rgba(15,25,12,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.8s ease, opacity 0.8s ease;
+            z-index: 10;
+        }
+
+        .wax-seal::after {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border-radius: 42% 58% 52% 48% / 48% 52% 48% 52%;
+            border: 1px solid rgba(135, 165, 125, 0.3);
+            box-shadow: inset 0 2px 3px rgba(0,0,0,0.25);
+            pointer-events: none;
+        }
+
+        /* Kuvertfickans framsida som täcker nedre delen av kortet */
+        .envelope-pocket-front {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(0deg, rgba(230,224,212,0.95) 0%, rgba(244,239,230,0.95) 100%);
+            clip-path: polygon(0 100%, 100% 100%, 100% 30%, 50% 0, 0 30%);
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* Skandinaviskt inbjudningskort */
         .card {
             position: absolute;
             width: 88%;
@@ -91,17 +152,22 @@
             border: 1px solid rgba(210, 200, 185, 0.4);
             z-index: 2;
             bottom: 5%;
-            transform: translateY(30%) scale(0.94);
+            transform: translateY(35%) scale(0.94);
             opacity: 0;
-            transition: transform 3.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s, opacity 2.4s ease 0.4s, z-index 0s;
+            transition: transform 3.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s, opacity 2.2s ease 0.5s, z-index 0s 0.9s;
             pointer-events: none;
         }
 
-        /* Öppningsanimation vid klick */
-        .open .real-envelope-bg {
+        /* Trigger vid öppning */
+        .open .envelope-flap-3d {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .open .wax-seal {
             opacity: 0;
-            transform: translateY(-6%) scale(1.02);
             pointer-events: none;
+            transform: translate(-50%, -50%) scale(0.5);
         }
 
         .open .card {
@@ -109,7 +175,7 @@
             opacity: 1;
             z-index: 50;
             pointer-events: auto;
-            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.35);
         }
 
         .image-crop-container {
@@ -150,16 +216,9 @@
     <main class="scene">
         <div id="envelopeWrapper" class="envelope-container" onclick="openEnvelope()">
             
-            <!-- Bakgrund med din envelope.jpg -->
-            <div class="real-envelope-bg">
-                <div id="tapPrompt" class="animate-prompt">
-                    <span class="sans-subtle text-[10px] text-stone-600 tracking-[0.25em] uppercase border-b border-stone-400/50 pb-0.5">
-                        TAP THE SEAL TO OPEN
-                    </span>
-                </div>
-            </div>
+            <div class="envelope-back"></div>
 
-            <!-- Inbjudningskortet -->
+            <!-- Inbjudningskortet som glider upp ur fickan -->
             <div id="saveTheDateCard" class="card select-none">
                 
                 <div class="pt-1">
@@ -217,6 +276,25 @@
 
             </div>
 
+            <!-- Kuvertfickans framsida -->
+            <div class="envelope-pocket-front"></div>
+
+            <!-- 3D-öppningsklaff -->
+            <div class="envelope-flap-3d"></div>
+
+            <!-- Grönt vaxsigill -->
+            <div id="waxSeal" class="wax-seal" onclick="openEnvelope()">
+                <span class="font-serif italic text-emerald-100/90 text-2xl font-light select-none tracking-wider" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));">
+                    I&amp;F
+                </span>
+            </div>
+
+            <div id="tapPrompt" class="animate-prompt">
+                <span class="sans-subtle text-[10px] text-stone-600 tracking-[0.25em] uppercase border-b border-stone-400/50 pb-0.5">
+                    TAP THE SEAL TO OPEN
+                </span>
+            </div>
+
         </div>
     </main>
 
@@ -252,7 +330,10 @@
             isOpen = true;
 
             const wrapper = document.getElementById('envelopeWrapper');
+            const prompt = document.getElementById('tapPrompt');
+
             wrapper.classList.add('open');
+            if (prompt) prompt.style.opacity = '0';
         }
 
         function addToCalendar(e) {
