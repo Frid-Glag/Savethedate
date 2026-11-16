@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Save the Date — Ida & Fritjof</title>
+
     <!-- Förhandsvisning i SMS, Messenger, WhatsApp etc. -->
-<meta property="og:title" content="Ett brev till dig - Hälsningar Ida & Fritjof" />
-<meta property="og:description" content="Tryck för att öppna." />
-<meta property="og:image" content="https://frid-glag.github.io/Savethedate/envelope.jpg" />
-<meta property="og:url" content="https://frid-glag.github.io/Savethedate/" />
-<meta property="og:type" content="website" />
+    <meta property="og:title" content="Ett brev till dig - Hälsningar Ida & Fritjof" />
+    <meta property="og:description" content="Tryck för att öppna." />
+    <meta property="og:image" content="https://frid-glag.github.io/Savethedate/envelope.jpg" />
+    <meta property="og:url" content="https://frid-glag.github.io/Savethedate/" />
+    <meta property="og:type" content="website" />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,7 +57,7 @@
             overflow: hidden;
         }
 
-        /* Skrapduken (kuvertet med mjuka hörn och utan mörk ram) */
+        /* Skrapduken */
         #scratchCanvas {
             position: absolute;
             inset: 0;
@@ -81,8 +83,15 @@
             z-index: 12;
             animation: pulse-subtle 2.5s infinite ease-in-out;
             pointer-events: none;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease, visibility 0.6s;
             white-space: nowrap;
+        }
+
+        /* Stänger av animationen och döljer texten helt när kuvertet öppnas */
+        .animate-prompt.hidden-prompt {
+            animation: none !important;
+            opacity: 0 !important;
+            visibility: hidden;
         }
 
         @keyframes pulse-subtle {
@@ -174,7 +183,6 @@
             const rect = canvas.getBoundingClientRect();
             const dpr = window.devicePixelRatio || 1;
             
-            // Sätter hög Retina-upplösning på canvasen
             canvas.width = rect.width * dpr;
             canvas.height = rect.height * dpr;
             ctx.scale(dpr, dpr);
@@ -190,7 +198,6 @@
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = 'high';
 
-            // Utzoomad beskärning som behåller så mycket som möjligt av originalbilden utan den yttre ramen
             const cropX = envImg.width * 0.135;
             const cropY = envImg.height * 0.025;
             const cropW = envImg.width * 0.73;
@@ -222,7 +229,7 @@
             if (scratchedPixels > 25) {
                 isRevealed = true;
                 canvas.classList.add('revealed');
-                if (prompt) prompt.style.opacity = '0';
+                if (prompt) prompt.classList.add('hidden-prompt');
             }
         }
 
