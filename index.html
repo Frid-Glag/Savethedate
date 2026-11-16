@@ -166,27 +166,34 @@
 
         function initCanvas() {
             const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
+            const dpr = window.devicePixelRatio || 1;
+            
+            // Sätter hög Retina-upplösning på canvasen
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
 
             if (envImg.complete) {
-                drawEnvelope();
+                drawEnvelope(rect.width, rect.height);
             } else {
-                envImg.onload = drawEnvelope;
+                envImg.onload = () => drawEnvelope(rect.width, rect.height);
             }
         }
 
-        function drawEnvelope() {
-            // Beskär bort de yttre kanterna och den svarta ramen från envelope.jpg
-            const cropX = envImg.width * 0.16;
-            const cropY = envImg.height * 0.03;
-            const cropW = envImg.width * 0.68;
-            const cropH = envImg.height * 0.90;
+        function drawEnvelope(displayWidth, displayHeight) {
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+
+            // Utzoomad beskärning som behåller så mycket som möjligt av originalbilden utan den yttre ramen
+            const cropX = envImg.width * 0.135;
+            const cropY = envImg.height * 0.025;
+            const cropW = envImg.width * 0.73;
+            const cropH = envImg.height * 0.92;
 
             ctx.drawImage(
                 envImg,
                 cropX, cropY, cropW, cropH,
-                0, 0, canvas.width, canvas.height
+                0, 0, displayWidth, displayHeight
             );
         }
 
